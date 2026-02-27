@@ -70,13 +70,16 @@ public class LibroController {
 	
 	
 	@GetMapping("/buscar")
-	public ResponseEntity<List<Libro>> buscar(@RequestParam(required = false) String autor, @RequestParam(required = false) String titulo) {
+	public ResponseEntity<List<Libro>> buscar(@RequestParam(required = false) String autor, @RequestParam(required = false) String titulo, @RequestParam(required = false) Integer anioPublicacion) {
 	    
 	    if (autor != null) {
 	        return ResponseEntity.ok(libroService.obtenerPorAutor(autor));
 	    } 
 	    if (titulo != null) {
 	        return ResponseEntity.ok(libroService.buscarLibrosPorTitulo(titulo));
+	    }
+	    if(anioPublicacion.toString() != null) {
+	    	return ResponseEntity.ok(libroService.buscarPorAnio(anioPublicacion));
 	    }
 	    
 	    return ResponseEntity.ok(libroService.obtenerTodos()); // Si no manda nada, trae todo

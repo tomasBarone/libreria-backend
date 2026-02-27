@@ -70,5 +70,16 @@ public class LibroService {
 	public List<Libro> buscarLibrosPorTitulo(String palabraClave) {
 	    return libroRepository.findByTituloContainingIgnoreCase(palabraClave);
 	}
+	
+	
+	
+	public List<Libro> buscarPorAnio(Integer anio){
+		
+		return libroRepository.findByanioPublicacion(anio);
+		
+	}
+	
+	
+	
 
 }
