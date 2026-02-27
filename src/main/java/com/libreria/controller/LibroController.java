@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.libreria.model.Libro;
 import com.libreria.service.LibroService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -83,6 +86,31 @@ public class LibroController {
 	    }
 	    
 	    return ResponseEntity.ok(libroService.obtenerTodos()); // Si no manda nada, trae todo
+	}
+	
+	
+	
+	@PutMapping("/actualizar/{id}")
+	public ResponseEntity<Libro> updateBook (@PathVariable Long id, @RequestBody Libro nuevoLibro){
+		
+		Libro libro = libroService.actualizar(id, nuevoLibro);
+		
+		System.out.println(libro);
+		
+		return new ResponseEntity<>(libro, HttpStatus.OK);
+		//return ResponseEntity.ok(libro);
+		
+	}
+	
+	
+	@DeleteMapping("/eliminar/{id}")
+	public ResponseEntity<Libro> deleteBook(@PathVariable Long id){
+		
+		 libroService.eliminar(id);
+		
+		 return ResponseEntity.noContent().build();
+		
+		
 	}
 
 }

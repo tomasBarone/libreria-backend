@@ -84,6 +84,12 @@ public class Libro {
 	public void setAnioPublicacion(int anioPublicacion) {
 		this.anioPublicacion = anioPublicacion;
 	}
+
+	@Override
+	public String toString() {
+		return "Libro [id=" + id + ", titulo=" + titulo + ", autor=" + autor + ", isbn=" + isbn + ", ejemplares="
+				+ ejemplares + ", anioPublicacion=" + anioPublicacion + "]";
+	}
 	
 	
 	

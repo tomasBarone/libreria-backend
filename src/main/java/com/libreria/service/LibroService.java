@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.libreria.model.Libro;
 import com.libreria.repository.LibroRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -78,6 +79,37 @@ public class LibroService {
 		return libroRepository.findByanioPublicacion(anio);
 		
 	}
+	
+	
+	public Libro actualizar(Long id, Libro nuevoLibro) {
+		
+		Libro libro = libroRepository.findById(id).orElseThrow(() -> new RuntimeException("no se encontro el libro con id : " +id));
+		
+		
+		libro.setTitulo(nuevoLibro.getTitulo());
+		libro.setAutor(nuevoLibro.getAutor());
+		libro.setEjemplares(nuevoLibro.getEjemplares());
+		libro.setAnioPublicacion(nuevoLibro.getAnioPublicacion());  
+		
+		
+		
+		libroRepository.save(libro);
+		
+		
+		return libro;
+		
+	}
+	
+	
+	@Transactional
+	public void eliminar(Long id) {
+	    // Verificamos si existe antes de borrar
+	    if (!libroRepository.existsById(id)) {
+	        throw new RuntimeException("No se puede eliminar: No existe el libro con ID: " + id);
+	    }
+	    libroRepository.deleteById(id);
+	}
+	
 	
 	
 	
