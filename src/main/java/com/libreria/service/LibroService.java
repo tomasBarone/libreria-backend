@@ -11,6 +11,7 @@ import com.libreria.repository.LibroRepository;
 import jakarta.transaction.Transactional;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import com.libreria.exception.*;
 
 @Service
 public class LibroService {
