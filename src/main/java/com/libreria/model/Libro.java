@@ -5,6 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,18 +23,26 @@ public class Libro {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
     
+	@NotBlank(message = "El titulo no puede estar vacio")
 	@Column(name = "TITULO")
 	private String titulo;
 	
+	@NotBlank(message = "El autor es obligatorio")
 	@Column(name = "AUTOR")
 	private String autor;
 	
 	@Column(unique = true, name = "ISBN")
 	private String isbn;
 	
+	@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta")
 	@Column(name = "EJEMPLARES")
 	private int ejemplares;
 	
+	@ManyToOne
+	@JoinColumn(name = "categoria_id")
+	private Categoria categoria;
+	
+	@Min(value= 0, message = "No puedes tener ejemplares negativos")
 	@Column(name = "ANIO_PUBLICACION")
 	private int anioPublicacion;
 	

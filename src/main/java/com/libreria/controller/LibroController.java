@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libreria.exception.GlobalExceptionHandler;
 import com.libreria.model.Libro;
 import com.libreria.service.LibroService;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -45,7 +47,7 @@ public class LibroController {
 	
      //POST: Crear un Libro
 	@PostMapping
-	public ResponseEntity<Libro> crearLibro(@RequestBody Libro libro){
+	public ResponseEntity<Libro> crearLibro(@Valid @RequestBody Libro libro){
 		
 		Libro nuevoLibro = libroService.guardarLibro(libro);
 		return new ResponseEntity<>(nuevoLibro, HttpStatus.CREATED);
@@ -63,7 +65,7 @@ public class LibroController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Libro> getById(@PathVariable Long id){
+	public ResponseEntity<Libro> getById(@Valid @PathVariable Long id) throws GlobalExceptionHandler{
 		
 		Libro libro = libroService.obtenerPorId(id);
 		
@@ -91,7 +93,7 @@ public class LibroController {
 	
 	
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<Libro> updateBook (@PathVariable Long id, @RequestBody Libro nuevoLibro){
+	public ResponseEntity<Libro> updateBook (@PathVariable Long id, @Valid @RequestBody Libro nuevoLibro){
 		
 		Libro libro = libroService.actualizar(id, nuevoLibro);
 		

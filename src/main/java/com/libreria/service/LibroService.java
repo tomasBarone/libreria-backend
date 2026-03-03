@@ -2,6 +2,7 @@ package com.libreria.service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -40,12 +41,19 @@ public class LibroService {
 	
 	
 	// Buscar por ID
-	public Libro obtenerPorId(Long id) {
+	public Libro obtenerPorId(Long id)  {
 		
 		
-		return libroRepository.findById(id).orElseThrow(() -> new RuntimeException("Libro no encontrado con id: " + id));
+		/*
+		if(libroRepository.findById(id).isPresent() == false) {
+			
+			System.out.println("hola");
+			return libroRepository.findById(id).orElseThrow(() -> new GlobalExceptionHandler());
+			
 		
+		}*/
 		
+		return libroRepository.findById(id).orElseThrow(() -> new RuntimeException("No se encontro el libro con ID: "+id));
 	}
 	
 	
