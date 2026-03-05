@@ -1,6 +1,7 @@
 package com.libreria.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import com.libreria.repository.CategoriaRepository;
 public class CategoriaService {
 
 	CategoriaRepository categoriaRepository;
+	
+	
 	
 	
 	public CategoriaService(CategoriaRepository categoriaRepository) {
@@ -35,5 +38,33 @@ public class CategoriaService {
 	}
 	
 	
+	public Optional<Categoria> buscarPorId(Long id) {
+		
+		return categoriaRepository.findById(id);
+		
+	}
+	
+	public Categoria actualizar(Categoria categoria, Long id) {
+		
+		
+	    
+	    Categoria categoriaActualizada = categoriaRepository.findById(id).orElseThrow();
+	    categoriaActualizada.setNombre(categoria.getNombre());
+	    categoriaRepository.save(categoriaActualizada);
+
+		
+		return categoriaActualizada;
+		
+	}
+	
+	
+	public void eliminar(Long id) {
+		
+		Categoria cat = categoriaRepository.findById(id).orElseThrow();
+	    categoriaRepository.delete(cat);
+	    
+	   
+		
+	}
 
 }
