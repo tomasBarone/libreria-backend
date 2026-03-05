@@ -3,6 +3,7 @@ package com.libreria.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.libreria.model.Categoria;
@@ -15,8 +16,7 @@ public class CategoriaService {
 	CategoriaRepository categoriaRepository;
 	
 	
-	
-	
+
 	public CategoriaService(CategoriaRepository categoriaRepository) {
 		super();
 		this.categoriaRepository = categoriaRepository;
@@ -38,9 +38,9 @@ public class CategoriaService {
 	}
 	
 	
-	public Optional<Categoria> buscarPorId(Long id) {
+	public Categoria buscarPorId(Long id) {
 		
-		return categoriaRepository.findById(id);
+		return categoriaRepository.findById(id).orElseThrow(() -> new RuntimeException("Id de categoria no encontrado"));
 		
 	}
 	

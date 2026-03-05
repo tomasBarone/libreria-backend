@@ -2,6 +2,7 @@ package com.libreria.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libreria.dto.LibroDTO;
 import com.libreria.exception.GlobalExceptionHandler;
+import com.libreria.model.Categoria;
 import com.libreria.model.Libro;
+import com.libreria.service.CategoriaService;
 import com.libreria.service.LibroService;
 
 import jakarta.transaction.Transactional;
@@ -28,28 +32,30 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/libros")
 public class LibroController {
 	
-	
 
 	private final LibroService libroService;
+	private final CategoriaService categoriaService;
 	
+
 	@GetMapping("/welcome")	
 	public String HomePage() {
 		System.out.println("data");
 		return "welcome";
 	}
 
-	public LibroController(LibroService libroService) {
+	public LibroController(LibroService libroService, CategoriaService categoriaService) {
 		super();
 		this.libroService = libroService;
+		this.categoriaService = categoriaService;
 	}
 	
 	
 	
      //POST: Crear un Libro
 	@PostMapping
-	public ResponseEntity<Libro> crearLibro(@Valid @RequestBody Libro libro){
+	public ResponseEntity<Libro> crearLibro(@Valid @RequestBody LibroDTO libroDTO){
 		
-		Libro nuevoLibro = libroService.guardarLibro(libro);
+		Libro nuevoLibro = libroService.guardarLibro(libroDTO);
 		return new ResponseEntity<>(nuevoLibro, HttpStatus.CREATED);
 		
 	}
@@ -95,9 +101,14 @@ public class LibroController {
 	@PutMapping("/actualizar/{id}")
 	public ResponseEntity<Libro> updateBook (@PathVariable Long id, @Valid @RequestBody Libro nuevoLibro){
 		
+		
+		
+		System.out.println("hola");
+		
+		
 		Libro libro = libroService.actualizar(id, nuevoLibro);
 		
-		System.out.println(libro);
+		
 		
 		return new ResponseEntity<>(libro, HttpStatus.OK);
 		//return ResponseEntity.ok(libro);
@@ -114,5 +125,7 @@ public class LibroController {
 		
 		
 	}
+	
+	
 
 }

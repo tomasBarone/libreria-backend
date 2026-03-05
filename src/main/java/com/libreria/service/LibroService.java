@@ -4,14 +4,20 @@ package com.libreria.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.libreria.model.Categoria;
 import com.libreria.model.Libro;
+import com.libreria.repository.CategoriaRepository;
 import com.libreria.repository.LibroRepository;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
+import com.libreria.dto.LibroDTO;
 import com.libreria.exception.*;
 
 @Service
@@ -19,18 +25,32 @@ public class LibroService {
 	
 	
 	private final LibroRepository libroRepository;
+
+	private  CategoriaService categoriaService;
 	
-	public LibroService(LibroRepository libroRepository) {
+	
+
+	
+	public LibroService(LibroRepository libroRepository, CategoriaService categoriaService) {
+		super();
 		this.libroRepository = libroRepository;
+		this.categoriaService = categoriaService;
 	}
-	
-	
-	
+
+
 	//Crear un libro
-	public Libro guardarLibro(Libro libro) {
+	public Libro guardarLibro(LibroDTO dto) {
+		
+		Categoria categoria = categoriaService.buscarPorId(dto.getCategoriaId());
+		
+		Libro libro = new Libro();
+		libro.setTitulo(dto.getTitulo());
+		libro.setAutor(dto.getAutor());
+		libro.setAnioPublicacion(dto.getAnioPublicacion());
+		libro.setEjemplares(dto.getEjemplares());
+		libro.setCategoria(categoria);
 		
 		return libroRepository.save(libro);
-		
 	}
 	
 	
@@ -93,12 +113,15 @@ public class LibroService {
 	public Libro actualizar(Long id, Libro nuevoLibro) {
 		
 		Libro libro = libroRepository.findById(id).orElseThrow(() -> new RuntimeException("no se encontro el libro con id : " +id));
+		Categoria categoria = categoriaService.buscarPorId(nuevoLibro.getCategoria().getId());
 		
 		
 		libro.setTitulo(nuevoLibro.getTitulo());
 		libro.setAutor(nuevoLibro.getAutor());
 		libro.setEjemplares(nuevoLibro.getEjemplares());
 		libro.setAnioPublicacion(nuevoLibro.getAnioPublicacion());  
+		libro.setCategoria(categoria);
+		
 		
 		
 		
@@ -118,6 +141,9 @@ public class LibroService {
 	    }
 	    libroRepository.deleteById(id);
 	}
+
+
+
 	
 	
 	

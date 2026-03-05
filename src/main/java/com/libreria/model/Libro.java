@@ -34,7 +34,7 @@ public class Libro {
 	@Column(unique = true, name = "ISBN")
 	private String isbn;
 	
-	@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta")
+	@Min(value= 0, message = "No puedes tener ejemplares negativos")
 	@Column(name = "EJEMPLARES")
 	private int ejemplares;
 	
@@ -42,9 +42,10 @@ public class Libro {
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
 	
-	@Min(value= 0, message = "No puedes tener ejemplares negativos")
+	@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta")
 	@Column(name = "ANIO_PUBLICACION")
 	private int anioPublicacion;
+	
 	
 	
 	
@@ -95,6 +96,16 @@ public class Libro {
 
 	public void setAnioPublicacion(int anioPublicacion) {
 		this.anioPublicacion = anioPublicacion;
+	}
+
+	
+	
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 	@Override

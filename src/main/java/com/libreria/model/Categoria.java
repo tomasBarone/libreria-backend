@@ -5,8 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Categoria {
 	
 	@Id
@@ -15,6 +19,8 @@ public class Categoria {
 
 	@NotBlank(message = "El nombre de la categoria es obligatorio")
 	private String nombre;
+	
+	
 
 	public Long getId() {
 		return id;
@@ -31,6 +37,13 @@ public class Categoria {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	@Override
+	public String toString() {
+		return "Categoria [id=" + id + ", nombre=" + nombre + "]";
+	}
+	
+	
 	
 	
 }
