@@ -23,6 +23,7 @@ import com.libreria.model.Categoria;
 import com.libreria.model.Libro;
 import com.libreria.service.CategoriaService;
 import com.libreria.service.LibroService;
+import com.libreria.dto.LibroResponseDTO;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -63,7 +64,7 @@ public class LibroController {
 	
 	//GET: Obtener todos
 	@GetMapping("/all")
-	public ResponseEntity<List<Libro>> listarLibros(){
+	public ResponseEntity<List<LibroResponseDTO>> listarLibros(){
 		
 		return ResponseEntity.ok(libroService.obtenerTodos());
 		
@@ -71,9 +72,9 @@ public class LibroController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Libro> getById(@Valid @PathVariable Long id) throws GlobalExceptionHandler{
+	public ResponseEntity<LibroResponseDTO> getById(@Valid @PathVariable Long id) throws GlobalExceptionHandler{
 		
-		Libro libro = libroService.obtenerPorId(id);
+		LibroResponseDTO libro = libroService.obtenerPorId(id);
 		
 		return ResponseEntity.ok(libro);
 		
@@ -81,8 +82,10 @@ public class LibroController {
 	
 	
 	@GetMapping("/buscar")
-	public ResponseEntity<List<Libro>> buscar(@RequestParam(required = false) String autor, @RequestParam(required = false) String titulo, @RequestParam(required = false) Integer anioPublicacion) {
+	public ResponseEntity<List<LibroResponseDTO>> buscar(@RequestParam(required = false) String autor, @RequestParam(required = false) String titulo, @RequestParam(required = false) Integer anioPublicacion) {
 	    
+		
+		
 	    if (autor != null) {
 	        return ResponseEntity.ok(libroService.obtenerPorAutor(autor));
 	    } 
@@ -99,7 +102,7 @@ public class LibroController {
 	
 	
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<Libro> updateBook (@PathVariable Long id, @Valid @RequestBody Libro nuevoLibro){
+	public ResponseEntity<Libro> updateBook (@PathVariable Long id, @Valid @RequestBody LibroDTO nuevoLibro){
 		
 		
 		

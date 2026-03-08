@@ -18,17 +18,20 @@ public class LibroDTO {
 	private int ejemplares;
 	
 	private Long categoriaId;
+	
+	private String isbn;
 
 	public LibroDTO(@NotBlank(message = "El titulo es requerido") String titulo,
 			@NotBlank(message = "El autor es requerido") String autor,
 			@Min(value = 1450, message = "Año invalido") int anioPublicacion, @Min(0) int ejemplares,
-			Long categoriaId) {
+			Long categoriaId, String isbn) {
 		super();
 		this.titulo = titulo;
 		this.autor = autor;
 		this.anioPublicacion = anioPublicacion;
 		this.ejemplares = ejemplares;
 		this.categoriaId = categoriaId;
+		this.isbn = isbn;
 	}
 
 	public String getTitulo() {
@@ -70,6 +73,16 @@ public class LibroDTO {
 	public void setCategoriaId(Long categoriaId) {
 		this.categoriaId = categoriaId;
 	}
+
+	public String getIsbn() {
+		return isbn;
+	}
+
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+	
+	
 	
 	
 	

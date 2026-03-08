@@ -1,6 +1,7 @@
 package com.libreria.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import com.libreria.dto.LibroDTO;
+import com.libreria.dto.LibroResponseDTO;
 import com.libreria.exception.*;
 
 @Service
@@ -50,18 +52,38 @@ public class LibroService {
 		libro.setEjemplares(dto.getEjemplares());
 		libro.setCategoria(categoria);
 		
+		libro.setIsbn(dto.getIsbn());
+		
 		return libroRepository.save(libro);
 	}
 	
 	
 	// Listar todos
-	public List<Libro> obtenerTodos(){
-		return libroRepository.findAll();
+	public List<LibroResponseDTO> obtenerTodos(){
+		
+		List<Libro> libro = libroRepository.findAll();
+		List<LibroResponseDTO> libroResponse = new ArrayList<>();
+		
+		for(int i = 0; i < libro.size(); i++) {
+			
+		
+		 LibroResponseDTO lib = new LibroResponseDTO();
+		 lib.setAnioPublicacion(libro.get(i).getAnioPublicacion());
+		 lib.setTitulo(libro.get(i).getTitulo());
+		 lib.setAutor(libro.get(i).getAutor());
+		 lib.setCategoriaId(libro.get(i).getCategoria().getNombre());
+		 libroResponse.add(lib);
+			
+			
+		}
+		
+		
+		return libroResponse;
 	}
 	
 	
 	// Buscar por ID
-	public Libro obtenerPorId(Long id)  {
+	public LibroResponseDTO obtenerPorId(Long id)  {
 		
 		
 		/*
@@ -73,47 +95,103 @@ public class LibroService {
 		
 		}*/
 		
-		return libroRepository.findById(id).orElseThrow(() -> new RuntimeException("No se encontro el libro con ID: "+id));
+		
+		Libro libro = libroRepository.findById(id).orElseThrow(() -> new RuntimeException("No se encontro el libro con id: "+id));
+		
+		LibroResponseDTO libroResponse = new LibroResponseDTO();
+		libroResponse.setAnioPublicacion(libro.getAnioPublicacion());
+		libroResponse.setAutor(libro.getAutor());
+		libroResponse.setCategoriaId(libro.getCategoria().getNombre());
+		libroResponse.setTitulo(libro.getTitulo());
+		
+		
+		return libroResponse;
 	}
 	
 	
-	public List<Libro> obtenerPorAutor(String autor) {
+	
+	
+	
+	
+	public List<LibroResponseDTO> obtenerPorAutor(String autor) {
 		
 		//opciones por si quiero manipular la lista
 		 //declararla manualmente
 		
-		//List<Libro> LibrosEncontrados = libroRepository.findByAutor(autor);
+		 List<Libro> LibrosEncontrados = libroRepository.findByAutorContainingIgnoreCase(autor);
+		 List<LibroResponseDTO> libroResponse = new ArrayList<>();
 		 
-		 /*
-		 *if (librosEncontrados.isEmpty()) {
-         Podrías hacer algo especial aquí
-                        }
-		 */
-		
-		
-		
-		return libroRepository.findByAutor(autor);
-		
-	}
-	
-	
-	public List<Libro> buscarLibrosPorTitulo(String palabraClave) {
-	    return libroRepository.findByTituloContainingIgnoreCase(palabraClave);
-	}
-	
-	
-	
-	public List<Libro> buscarPorAnio(Integer anio){
-		
-		return libroRepository.findByanioPublicacion(anio);
+		 for(int i = 0; i < LibrosEncontrados.size(); i++) {
+			 
+			 LibroResponseDTO lib = new LibroResponseDTO("", "");
+			 lib.setAutor(LibrosEncontrados.get(i).getAutor());
+			 lib.setTitulo(LibrosEncontrados.get(i).getTitulo());
+			 libroResponse.add(lib);
+			 
+		 }
+		 
+		 
+		return libroResponse;
 		
 	}
 	
 	
-	public Libro actualizar(Long id, Libro nuevoLibro) {
+	public List<LibroResponseDTO> buscarLibrosPorTitulo(String palabraClave) {
+		
+		List<Libro> libro = libroRepository.findByTituloContainingIgnoreCase(palabraClave);
+		List<LibroResponseDTO> libroResponse = new ArrayList<>();
+		
+		for(int i = 0; i < libro.size(); i++) {
+			
+			LibroResponseDTO lib = new LibroResponseDTO();
+			lib.setAnioPublicacion(libro.get(i).getAnioPublicacion());
+			lib.setAutor(libro.get(i).getAutor());
+			lib.setCategoriaId(libro.get(i).getCategoria().getNombre());
+			lib.setTitulo(libro.get(i).getTitulo());
+			libroResponse.add(lib);
+			
+			
+			
+		}
+		
+		
+		
+	    return libroResponse;
+	}
+	
+	
+	
+	public List<LibroResponseDTO> buscarPorAnio(Integer anio){
+		
+		
+		List<Libro> libros = libroRepository.findByanioPublicacion(anio);
+		List<LibroResponseDTO> libroResponse = new ArrayList<>();
+		
+		
+		for(int i = 0; i < libros.size(); i++ ) {
+			
+			
+			LibroResponseDTO lib = new LibroResponseDTO();
+			lib.setAnioPublicacion(libros.get(i).getAnioPublicacion());
+			lib.setTitulo(libros.get(i).getTitulo());
+			libroResponse.add(lib);
+			
+			
+			
+			
+		}
+		
+		return libroResponse;
+		
+	}
+	
+	
+	public Libro actualizar(Long id, LibroDTO nuevoLibro) {
 		
 		Libro libro = libroRepository.findById(id).orElseThrow(() -> new RuntimeException("no se encontro el libro con id : " +id));
-		Categoria categoria = categoriaService.buscarPorId(nuevoLibro.getCategoria().getId());
+		Categoria categoria = categoriaService.buscarPorId(nuevoLibro.getCategoriaId());
+		
+		
 		
 		
 		libro.setTitulo(nuevoLibro.getTitulo());
@@ -121,6 +199,8 @@ public class LibroService {
 		libro.setEjemplares(nuevoLibro.getEjemplares());
 		libro.setAnioPublicacion(nuevoLibro.getAnioPublicacion());  
 		libro.setCategoria(categoria);
+		
+	
 		
 		
 		
