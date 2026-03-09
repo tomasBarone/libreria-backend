@@ -1,11 +1,14 @@
 package com.libreria.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.libreria.dto.CategoriaDTO;
+import com.libreria.dto.CategoriaResponseDTO;
 import com.libreria.model.Categoria;
 import com.libreria.model.Libro;
 import com.libreria.repository.CategoriaRepository;
@@ -24,36 +27,70 @@ public class CategoriaService {
 
 
 	//obtener todas las categorias
-	public List<Categoria>getAll() {
+	public List<CategoriaResponseDTO>getAll() {
 		
+		List<Categoria> cat = categoriaRepository.findAll();
+		List<CategoriaResponseDTO> catListDto = new ArrayList<>();
 		
-		return categoriaRepository.findAll();
+		for(int i = 0; i < cat.size(); i++) {
+			
+			CategoriaResponseDTO catResponse = new CategoriaResponseDTO();
+			catResponse.setNombre(cat.get(i).getNombre());
+			catResponse.setMensaje("Categoria id: "+cat.get(i).getId());
+			catListDto.add(catResponse);
+			
+			
+		}
+		
+		return catListDto;
 		
 	}
 	
 	
-	public Categoria add(Categoria cat) {
+	public CategoriaResponseDTO add(CategoriaDTO cat) {
 		
-		return categoriaRepository.save(cat);
+		Categoria catBD = new Categoria();
+		CategoriaResponseDTO catResponse = new CategoriaResponseDTO();
+		
+		catBD.setNombre(cat.getNombre());
+		catResponse.setNombre(cat.getNombre());
+		catResponse.setMensaje("Categoria creada con Exito");
+	
+		
+		categoriaRepository.save(catBD);
+		
+		
+		return catResponse;
 	}
 	
 	
-	public Categoria buscarPorId(Long id) {
+	public CategoriaResponseDTO buscarPorId(Long id) {
 		
-		return categoriaRepository.findById(id).orElseThrow(() -> new RuntimeException("Id de categoria no encontrado"));
+		Categoria cat = categoriaRepository.findById(id).orElseThrow(() -> new RuntimeException("Id de categoria no encontrado"));
+		CategoriaResponseDTO catResponse = new CategoriaResponseDTO();
+		
+		catResponse.setNombre(cat.getNombre());
+		catResponse.setMensaje("Categoria id: "+cat.getId());
+		
+		return catResponse; 
 		
 	}
 	
-	public Categoria actualizar(Categoria categoria, Long id) {
+	public CategoriaResponseDTO actualizar(CategoriaDTO categoria, Long id) {
 		
 		
 	    
 	    Categoria categoriaActualizada = categoriaRepository.findById(id).orElseThrow();
+	    CategoriaResponseDTO catResponse = new CategoriaResponseDTO();
+	    
+	    catResponse.setNombre(categoria.getNombre());
+	    catResponse.setMensaje("Categoria Actualizada Exitosamente!");
 	    categoriaActualizada.setNombre(categoria.getNombre());
+	    
 	    categoriaRepository.save(categoriaActualizada);
 
 		
-		return categoriaActualizada;
+		return catResponse;
 		
 	}
 	
@@ -65,6 +102,13 @@ public class CategoriaService {
 	    
 	   
 		
+	}
+
+
+	public Categoria idPrivado(Long categoriaId) {
+		Categoria cat = categoriaRepository.findById(categoriaId).orElseThrow(() -> new RuntimeException("Id de categoria no encontrado"));
+		
+		return cat;
 	}
 
 }

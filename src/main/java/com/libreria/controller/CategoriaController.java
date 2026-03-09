@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libreria.dto.CategoriaDTO;
+import com.libreria.dto.CategoriaResponseDTO;
 import com.libreria.model.Categoria;
 import com.libreria.model.Libro;
 import com.libreria.service.CategoriaService;
@@ -36,27 +38,27 @@ public class CategoriaController {
 
 
 	@GetMapping("/todas")
-	public ResponseEntity<List<Categoria>> obtenerTodas() {
+	public ResponseEntity<List<CategoriaResponseDTO>> obtenerTodas() {
 		
-		List<Categoria> cat =  categoriaService.getAll();
+		List<CategoriaResponseDTO> cat =  categoriaService.getAll();
 		
 		return ResponseEntity.ok(cat);
 	}
 	
 	
 	@PostMapping("/agregar")
-	public ResponseEntity<Categoria> agregar(@Valid @RequestBody Categoria cat){
+	public ResponseEntity<CategoriaResponseDTO> agregar(@Valid @RequestBody CategoriaDTO cat){
 		
-		Categoria cat1 = categoriaService.add(cat);
+		CategoriaResponseDTO cat1 = categoriaService.add(cat);
 		
 		return ResponseEntity.ok(cat1);
 		
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Categoria> buscarPorId(@Valid @PathVariable Long id){
+	public ResponseEntity<CategoriaResponseDTO> buscarPorId(@Valid @PathVariable Long id){
 		
-		  Categoria cat = categoriaService.buscarPorId(id);
+		  CategoriaResponseDTO cat = categoriaService.buscarPorId(id);
 		
 		return ResponseEntity.ok(cat);
 		
@@ -64,10 +66,10 @@ public class CategoriaController {
 	
 	
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<Categoria> actualizarCategoria( @Valid @RequestBody Categoria cat, @PathVariable Long id){
+	public ResponseEntity<CategoriaResponseDTO> actualizarCategoria( @Valid @RequestBody CategoriaDTO cat, @PathVariable Long id){
 		
 		
-		Categoria categoriaActualizada = categoriaService.actualizar(cat,id);
+		CategoriaResponseDTO categoriaActualizada = categoriaService.actualizar(cat,id);
 		
 		
 		

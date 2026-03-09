@@ -29,7 +29,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
 @RequestMapping("/api/libros")
 public class LibroController {
 	
@@ -54,9 +54,9 @@ public class LibroController {
 	
      //POST: Crear un Libro
 	@PostMapping
-	public ResponseEntity<Libro> crearLibro(@Valid @RequestBody LibroDTO libroDTO){
+	public ResponseEntity<LibroResponseDTO> crearLibro(@Valid @RequestBody LibroDTO libroDTO){
 		
-		Libro nuevoLibro = libroService.guardarLibro(libroDTO);
+		LibroResponseDTO nuevoLibro = libroService.guardarLibro(libroDTO);
 		return new ResponseEntity<>(nuevoLibro, HttpStatus.CREATED);
 		
 	}
@@ -102,14 +102,14 @@ public class LibroController {
 	
 	
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<Libro> updateBook (@PathVariable Long id, @Valid @RequestBody LibroDTO nuevoLibro){
+	public ResponseEntity<LibroResponseDTO> updateBook (@PathVariable Long id, @Valid @RequestBody LibroDTO nuevoLibro){
 		
 		
 		
 		System.out.println("hola");
 		
 		
-		Libro libro = libroService.actualizar(id, nuevoLibro);
+		LibroResponseDTO libro = libroService.actualizar(id, nuevoLibro);
 		
 		
 		

@@ -41,9 +41,9 @@ public class LibroService {
 
 
 	//Crear un libro
-	public Libro guardarLibro(LibroDTO dto) {
+	public LibroResponseDTO guardarLibro(LibroDTO dto) {
 		
-		Categoria categoria = categoriaService.buscarPorId(dto.getCategoriaId());
+		Categoria categoria = categoriaService.idPrivado(dto.getCategoriaId());
 		
 		Libro libro = new Libro();
 		libro.setTitulo(dto.getTitulo());
@@ -51,10 +51,19 @@ public class LibroService {
 		libro.setAnioPublicacion(dto.getAnioPublicacion());
 		libro.setEjemplares(dto.getEjemplares());
 		libro.setCategoria(categoria);
-		
 		libro.setIsbn(dto.getIsbn());
 		
-		return libroRepository.save(libro);
+		libroRepository.save(libro);
+		
+		LibroResponseDTO libroResponse = new LibroResponseDTO();
+		libroResponse.setTitulo(dto.getTitulo());
+		libroResponse.setAutor(dto.getAutor());
+		libroResponse.setAnioPublicacion(dto.getAnioPublicacion());
+		libroResponse.setCategoriaId(libro.getCategoria().getNombre());
+		
+		
+		
+		return libroResponse;
 	}
 	
 	
@@ -186,11 +195,11 @@ public class LibroService {
 	}
 	
 	
-	public Libro actualizar(Long id, LibroDTO nuevoLibro) {
+	public LibroResponseDTO actualizar(Long id, LibroDTO nuevoLibro) {
 		
 		Libro libro = libroRepository.findById(id).orElseThrow(() -> new RuntimeException("no se encontro el libro con id : " +id));
-		Categoria categoria = categoriaService.buscarPorId(nuevoLibro.getCategoriaId());
-		
+		Categoria categoria = categoriaService.idPrivado(nuevoLibro.getCategoriaId());
+		LibroResponseDTO libroResponse = new LibroResponseDTO();
 		
 		
 		
@@ -200,6 +209,11 @@ public class LibroService {
 		libro.setAnioPublicacion(nuevoLibro.getAnioPublicacion());  
 		libro.setCategoria(categoria);
 		
+		libroResponse.setTitulo(nuevoLibro.getTitulo());
+		libroResponse.setAutor(nuevoLibro.getAutor());
+		libroResponse.setAnioPublicacion(nuevoLibro.getAnioPublicacion());
+		libroResponse.setCategoriaId(libro.getCategoria().getNombre());
+		
 	
 		
 		
@@ -208,7 +222,7 @@ public class LibroService {
 		libroRepository.save(libro);
 		
 		
-		return libro;
+		return libroResponse;
 		
 	}
 	
