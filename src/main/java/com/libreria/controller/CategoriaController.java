@@ -82,7 +82,7 @@ public class CategoriaController {
 		
 		 categoriaService.eliminar(id);
 		
-		return ResponseEntity.ok(null);
+		return ResponseEntity.noContent().build();
 		
 	}
 

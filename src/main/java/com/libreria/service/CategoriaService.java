@@ -37,7 +37,15 @@ public class CategoriaService {
 			CategoriaResponseDTO catResponse = new CategoriaResponseDTO();
 			catResponse.setNombre(cat.get(i).getNombre());
 			catResponse.setMensaje("Categoria id: "+cat.get(i).getId());
-			catListDto.add(catResponse);
+		    
+			
+			List<String> titulos = new ArrayList<>();
+	        for (Libro libro : cat.get(i).getLibros()) {
+	            titulos.add(libro.getTitulo());
+	        }
+	        catResponse.setLibrosAsociados(titulos);
+	        
+	        catListDto.add(catResponse);
 			
 			
 		}
@@ -71,6 +79,12 @@ public class CategoriaService {
 		
 		catResponse.setNombre(cat.getNombre());
 		catResponse.setMensaje("Categoria id: "+cat.getId());
+		
+		List<String> titulos = new ArrayList<>();
+	    for (Libro libro : cat.getLibros()) {
+	        titulos.add(libro.getTitulo());
+	    }
+	    catResponse.setLibrosAsociados(titulos);
 		
 		return catResponse; 
 		

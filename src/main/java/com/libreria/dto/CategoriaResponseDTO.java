@@ -1,5 +1,7 @@
 package com.libreria.dto;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
 
 public class CategoriaResponseDTO {
@@ -7,6 +9,7 @@ public class CategoriaResponseDTO {
 	@NotBlank(message = "El nombre de la categoria es obligatorio")
 	private String nombre;
 	private String mensaje;
+	private List<String> librosAsociados;
 	
 	
 	public CategoriaResponseDTO() {
@@ -32,6 +35,14 @@ public class CategoriaResponseDTO {
 
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
+	}
+
+	public List<String> getLibrosAsociados() {
+		return librosAsociados;
+	}
+
+	public void setLibrosAsociados(List<String> librosAsociados) {
+		this.librosAsociados = librosAsociados;
 	}
 	
 	
