@@ -3,6 +3,8 @@ package com.libreria.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -56,6 +58,12 @@ public class LibroController {
 	@PostMapping
 	public ResponseEntity<LibroResponseDTO> crearLibro(@Valid @RequestBody LibroDTO libroDTO){
 		
+		if(libroDTO.getIsbn().length() > 13) {
+			
+			throw new RuntimeException("ISBN invalido");
+			
+		}
+		
 		LibroResponseDTO nuevoLibro = libroService.guardarLibro(libroDTO);
 		return new ResponseEntity<>(nuevoLibro, HttpStatus.CREATED);
 		
@@ -64,9 +72,9 @@ public class LibroController {
 	
 	//GET: Obtener todos
 	@GetMapping("/all")
-	public ResponseEntity<List<LibroResponseDTO>> listarLibros(){
+	public ResponseEntity<Page<LibroResponseDTO>> listarLibros(Pageable pageable){
 		
-		return ResponseEntity.ok(libroService.obtenerTodos());
+		return ResponseEntity.ok(libroService.obtenerTodos(pageable));
 		
 		
 	}
@@ -92,11 +100,11 @@ public class LibroController {
 	    if (titulo != null) {
 	        return ResponseEntity.ok(libroService.buscarLibrosPorTitulo(titulo));
 	    }
-	    if(anioPublicacion.toString() != null) {
+	    if(anioPublicacion != null) {
 	    	return ResponseEntity.ok(libroService.buscarPorAnio(anioPublicacion));
 	    }
 	    
-	    return ResponseEntity.ok(libroService.obtenerTodos()); // Si no manda nada, trae todo
+	    return ResponseEntity.notFound().build();
 	}
 	
 	
@@ -130,5 +138,26 @@ public class LibroController {
 	}
 	
 	
+	
+	@GetMapping("/buscar/categoria")
+	public ResponseEntity<List<LibroResponseDTO>> listarPorCategoriaYanio(@RequestParam String categoria,@RequestParam int anio){
+		
+		
+		List<LibroResponseDTO> libros = libroService.buscarPorCategoriaYanio(categoria,anio);
+		
+		return ResponseEntity.ok(libros);
+	}
+	
+	
+	@GetMapping("/filtrar-avanzado")
+	public ResponseEntity<Page<LibroResponseDTO>> filtrarLibros(
+	        @RequestParam(required = false) String categoria,
+	        @RequestParam(required = false) Integer anioInicio,
+	        @RequestParam(required = false) Integer anioFin,
+	        Pageable pageable) {
+	    
+	    Page<LibroResponseDTO> libros = libroService.filtrarAvanzado(categoria, anioInicio, anioFin, pageable);
+	    return ResponseEntity.ok(libros);
+	}
 
 }

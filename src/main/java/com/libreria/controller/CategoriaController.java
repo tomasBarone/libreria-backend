@@ -85,5 +85,13 @@ public class CategoriaController {
 		return ResponseEntity.noContent().build();
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

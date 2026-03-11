@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.libreria.model.Categoria;
@@ -18,6 +20,8 @@ import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+import com.libreria.dto.CategoriaDTO;
+import com.libreria.dto.CategoriaResponseDTO;
 import com.libreria.dto.LibroDTO;
 import com.libreria.dto.LibroResponseDTO;
 import com.libreria.exception.*;
@@ -28,7 +32,7 @@ public class LibroService {
 	
 	private final LibroRepository libroRepository;
 
-	private  CategoriaService categoriaService;
+	private CategoriaService categoriaService;
 	
 	
 
@@ -68,11 +72,12 @@ public class LibroService {
 	
 	
 	// Listar todos
-	public List<LibroResponseDTO> obtenerTodos(){
+	public Page<LibroResponseDTO> obtenerTodos(Pageable pageable){
 		
-		List<Libro> libro = libroRepository.findAll();
-		List<LibroResponseDTO> libroResponse = new ArrayList<>();
+		Page<Libro> paginaLibros = libroRepository.findAll(pageable);
+		//List<LibroResponseDTO> libroResponse = new ArrayList<>();
 		
+		/*
 		for(int i = 0; i < libro.size(); i++) {
 			
 		
@@ -85,9 +90,16 @@ public class LibroService {
 			
 			
 		}
+		*/
 		
-		
-		return libroResponse;
+		return paginaLibros.map(libro -> {
+	        LibroResponseDTO dto = new LibroResponseDTO();
+	        dto.setTitulo(libro.getTitulo());
+	        dto.setAutor(libro.getAutor());
+	        dto.setAnioPublicacion(libro.getAnioPublicacion());
+	        dto.setCategoriaId(libro.getCategoria().getNombre());
+	        return dto;
+	    });
 	}
 	
 	
@@ -237,9 +249,44 @@ public class LibroService {
 	}
 
 
+	
+	
+	public List<LibroResponseDTO> buscarPorCategoriaYanio(String categoria, int anio) {
+	
+		//List<CategoriaResponseDTO> categorias = categoriaService.getAll();
+		List<Libro> libros = libroRepository.findByCategoriaNombreAndAnioPublicacionLessThan(categoria,anio);
+		List<LibroResponseDTO> librosResponse = new ArrayList<>();
+		
+		
+		for(Libro l : libros ) {
+			
+			LibroResponseDTO libDTO = new LibroResponseDTO();
+			libDTO.setTitulo(l.getTitulo());
+			libDTO.setAnioPublicacion(l.getAnioPublicacion());
+			libDTO.setAutor(l.getAutor());
+			libDTO.setCategoriaId(categoria);
+			librosResponse.add(libDTO);
+			
+		}
+		
+	    
+		return librosResponse;
+	}
+
+
 
 	
-	
+	public Page<LibroResponseDTO> filtrarAvanzado(String cat, Integer inicio, Integer fin, Pageable pageable) {
+	    return libroRepository.filtrarLibrosPro(cat, inicio, fin, pageable)
+	            .map(l -> {
+	                LibroResponseDTO dto = new LibroResponseDTO();
+	                dto.setTitulo(l.getTitulo());
+	                dto.setAutor(l.getAutor());
+	                dto.setAnioPublicacion(l.getAnioPublicacion());
+	                dto.setCategoriaId(l.getCategoria().getNombre());
+	                return dto;
+	            });
+	}
 	
 	
 
