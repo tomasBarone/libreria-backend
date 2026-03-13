@@ -2,6 +2,7 @@ package com.libreria.dto;
 
 import com.libreria.model.Categoria;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,17 +15,18 @@ import jakarta.validation.constraints.NotBlank;
 public class LibroResponseDTO {
 	
 
-    
+	@Schema(example = "El Aleph")
 	@NotBlank(message = "El titulo no puede estar vacio")
 	private String titulo;
 	
 	@NotBlank(message = "El autor es obligatorio")
-
+	@Schema(example = "Jorge Luis Borges")
 	private String autor;
 	
-
+	@Schema(example = "Novela")
 	private String categoriaNombre;
 	
+	@Schema(example = "1949")
 	@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta")
 	private int anioPublicacion;
 

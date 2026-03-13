@@ -2,9 +2,11 @@ package com.libreria.controller;
 
 import java.util.List;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,9 @@ import com.libreria.model.Categoria;
 import com.libreria.model.Libro;
 import com.libreria.service.CategoriaService;
 import com.libreria.service.LibroService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.libreria.dto.LibroResponseDTO;
 
 import jakarta.transaction.Transactional;
@@ -33,6 +38,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/libros")
+@Tag(name = "Libros", description = "Operaciones relacionadas con la gestión de libros")
 public class LibroController {
 	
 
@@ -72,7 +78,7 @@ public class LibroController {
 	
 	//GET: Obtener todos
 	@GetMapping("/all")
-	public ResponseEntity<Page<LibroResponseDTO>> listarLibros(Pageable pageable){
+	public ResponseEntity<Page<LibroResponseDTO>> listarLibros(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "titulo")Pageable pageable){
 		
 		return ResponseEntity.ok(libroService.obtenerTodos(pageable));
 		
