@@ -1,8 +1,11 @@
 package com.libreria.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,38 +16,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 	
-	@Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-            .csrf(csrf -> csrf.disable()) // Desactivamos por ahora para facilitar las pruebas
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Sin estado (para JWT luego)
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() // Liberamos Swagger
-                .anyRequest().authenticated() // Todo lo demás requiere login
-            )
-            .httpBasic(Customizer.withDefaults()) // Permite login básico (User/Pass) en el Header
-            .build();
-    }
+	@Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
 	@Bean
-	public UserDetailsService userDetailsService() {
-	    UserDetails user = User.builder()
-	        .username("admin")
-	        .password(passwordEncoder().encode("admin123"))
-	        .roles("ADMIN")
-	        .build();
-
-	    return new InMemoryUserDetailsManager(user);
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder(); // El estándar para encriptar claves
-	}
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http
+		        .csrf(csrf -> csrf.disable()) 
+		        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
+		        .authorizeHttpRequests(auth -> auth
+		            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+		            .requestMatchers("/api/auth/**").permitAll()
+		            .anyRequest().authenticated() 
+		        )
+		        .httpBasic(h -> h.disable()) 
+		        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+		        .build();
+        
+    }
+	
 }
