@@ -32,7 +32,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         Collection<? extends GrantedAuthority> authorities = userEntity.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_".concat(role.getRoleName().name())))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet()); 
 
         // 3. Devolvemos el User de Spring Security con los datos de nuestra DB
         return new User(
