@@ -8,7 +8,7 @@ import com.libreria.model.RoleEntity;
 import com.libreria.model.RoleEnum;
 import com.libreria.model.UserEntity;
 
-public interface RoleRepository extends JpaRepository<UserEntity, Long> {
+public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
 	
 	Optional<RoleEntity> findByRoleName(RoleEnum roleName);
 

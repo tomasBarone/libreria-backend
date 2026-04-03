@@ -37,7 +37,7 @@ public class UserEntity {
  @CollectionTable(name = "usuario_roles", joinColumns = @JoinColumn(name =  "usuario_id"))
  @Column(name = "rol")*/
  
- @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) // CascadeType.ALL para que guarde roles nuevos automáticamente
+ @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) // CascadeType.ALL para que guarde roles nuevos automáticamente
  @JoinTable(
      name = "user_roles", // Nombre de la tabla intermedia
      joinColumns = @JoinColumn(name = "user_id"),
