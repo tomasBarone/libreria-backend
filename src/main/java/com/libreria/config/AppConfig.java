@@ -19,16 +19,7 @@ public class AppConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-            .username("admin")
-            .password(passwordEncoder().encode("admin123"))
-            .roles("ADMIN")
-            .build();
 
-        return new InMemoryUserDetailsManager(user);
-    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
