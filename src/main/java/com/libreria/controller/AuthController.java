@@ -3,6 +3,8 @@ package com.libreria.controller;
 
 import com.libreria.dto.LoginRequest;
 import com.libreria.security.JwtUtils;
+import com.libreria.service.AuthService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,30 +19,18 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
 	
-	@Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtUtils jwtUtils;
+	private final AuthService authService;
+	
+	
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Map<String,String>> login(@RequestBody LoginRequest loginRequest) {
        
     
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(), 
-                loginRequest.getPassword()
-            )
-        );
-
-
-        String token = jwtUtils.generateToken(authentication.getName());
-
-       
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        
+        Map<String,String> response = authService.authenticateUser(loginRequest);
         return ResponseEntity.ok(response);
     }
 
