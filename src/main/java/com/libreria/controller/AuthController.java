@@ -2,6 +2,8 @@
 package com.libreria.controller;
 
 import com.libreria.dto.LoginRequest;
+import com.libreria.dto.UserRegistrationDTO;
+import com.libreria.dto.UserResponseDTO;
 import com.libreria.security.JwtUtils;
 import com.libreria.service.AuthService;
 import com.libreria.dto.AuthResponseDTO;
@@ -33,6 +35,14 @@ public class AuthController {
     
         AuthResponseDTO authResponse = authService.authenticateUser(loginRequest);
         return ResponseEntity.ok(authResponse);
+    }
+    
+    
+    @PostMapping("/register")
+    public ResponseEntity<UserResponseDTO> register(@RequestBody UserRegistrationDTO registrationDTO) {
+        
+        UserResponseDTO response = authService.registerUser(registrationDTO);
+        return ResponseEntity.ok(response);
     }
 
 }

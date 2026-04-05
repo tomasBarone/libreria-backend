@@ -1,10 +1,14 @@
 package com.libreria.service;
 
+
+import com.libreria.model.RoleEnum;
 import com.libreria.dto.AuthResponseDTO;
 import com.libreria.dto.LoginRequest;
 import com.libreria.dto.UserRegistrationDTO;
 import com.libreria.dto.UserResponseDTO;
+import com.libreria.model.RoleEntity;
 import com.libreria.model.UserEntity;
+import com.libreria.repository.RoleRepository;
 import com.libreria.repository.UserRepository;
 import com.libreria.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,6 +38,9 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private RoleRepository roleRepository;
 
     
     
@@ -66,6 +74,15 @@ public class AuthService {
         
         //encriptar
         entity.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
+        
+        
+        //Buscamos el rol "USER" en la base de datos
+         
+        RoleEntity userRole = roleRepository.findByRoleName(RoleEnum.USER)
+                .orElseThrow(() -> new RuntimeException("Error: El rol USER no existe en la base de datos."));
+        
+        entity.setRoles(Set.of(userRole)); // Le asignamos el rol
+        
         
         // 2. Se guardan en la BD
         UserEntity savedUser = userRepository.save(entity);
