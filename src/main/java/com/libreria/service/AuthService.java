@@ -1,5 +1,6 @@
 package com.libreria.service;
 
+import com.libreria.dto.AuthResponseDTO;
 import com.libreria.dto.LoginRequest;
 import com.libreria.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -20,7 +23,7 @@ public class AuthService {
     @Autowired
     private JwtUtils jwtUtils;
 
-    public Map<String, String> authenticateUser(LoginRequest loginRequest) {
+    public AuthResponseDTO authenticateUser(LoginRequest loginRequest) {
         
     	// 1. Autenticar las credenciales
         Authentication authentication = authenticationManager.authenticate(
@@ -33,10 +36,11 @@ public class AuthService {
         // 2. Generar el token
         String token = jwtUtils.generateToken(authentication.getName());
 
-        // 3. Preparar la respuesta
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        
-        return response;
+     // Extraemos los roles de la autenticación
+        Set<String> roles = authentication.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toSet());
+
+        return new AuthResponseDTO(token, authentication.getName(), roles);
     }
 }

@@ -4,6 +4,7 @@ package com.libreria.controller;
 import com.libreria.dto.LoginRequest;
 import com.libreria.security.JwtUtils;
 import com.libreria.service.AuthService;
+import com.libreria.dto.AuthResponseDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +28,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String,String>> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequest loginRequest) {
        
     
-        Map<String,String> response = authService.authenticateUser(loginRequest);
-        return ResponseEntity.ok(response);
+        AuthResponseDTO authResponse = authService.authenticateUser(loginRequest);
+        return ResponseEntity.ok(authResponse);
     }
 
 }
