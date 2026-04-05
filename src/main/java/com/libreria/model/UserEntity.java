@@ -37,6 +37,9 @@ public class UserEntity {
  @CollectionTable(name = "usuario_roles", joinColumns = @JoinColumn(name =  "usuario_id"))
  @Column(name = "rol")*/
  
+ 
+ 
+ 
  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) // CascadeType.ALL para que guarde roles nuevos automáticamente
  @JoinTable(
      name = "user_roles", // Nombre de la tabla intermedia
@@ -71,6 +74,15 @@ public class UserEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	
 	
  
