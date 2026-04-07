@@ -6,6 +6,9 @@ import com.libreria.dto.UserRegistrationDTO;
 import com.libreria.dto.UserResponseDTO;
 import com.libreria.security.JwtUtils;
 import com.libreria.service.AuthService;
+
+import jakarta.validation.Valid;
+
 import com.libreria.dto.AuthResponseDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +42,7 @@ public class AuthController {
     
     
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@RequestBody UserRegistrationDTO registrationDTO) {
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRegistrationDTO registrationDTO) {
         
         UserResponseDTO response = authService.registerUser(registrationDTO);
         return ResponseEntity.ok(response);

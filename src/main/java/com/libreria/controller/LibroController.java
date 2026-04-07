@@ -42,7 +42,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "Libros", description = "Operaciones relacionadas con la gestión de libros")
 public class LibroController {
 	
-
+    
 	private final LibroService libroService;
 	private final CategoriaService categoriaService;
 	
