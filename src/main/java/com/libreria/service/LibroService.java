@@ -277,7 +277,7 @@ public class LibroService {
 
 	
 	public Page<LibroResponseDTO> filtrarAvanzado(String cat, Integer inicio, Integer fin, Pageable pageable) {
-	    return libroRepository.filtrarLibrosPro(cat, inicio, fin, pageable)
+	    return libroRepository.filtrarLibrosPro(cat, inicio, fin, pageable)  
 	            .map(l -> {
 	                LibroResponseDTO dto = new LibroResponseDTO();
 	                dto.setTitulo(l.getTitulo());
