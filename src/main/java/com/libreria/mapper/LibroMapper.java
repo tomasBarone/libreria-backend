@@ -12,9 +12,11 @@ import com.libreria.model.Libro;
 public interface LibroMapper {
 
     // Convierte de Entidad a DTO (para las respuestas)
+	@Mapping(source = "categoria.nombre", target = "categoriaId")
     LibroResponseDTO toResponseDTO(Libro libro);
 
     // Convierte de DTO a Entidad (para guardar)
+    @Mapping(target = "categoria", ignore = true)
     @Mapping(target = "id", ignore = true) // El ID lo genera la DB
     Libro toEntity(LibroDTO libroDTO);
 

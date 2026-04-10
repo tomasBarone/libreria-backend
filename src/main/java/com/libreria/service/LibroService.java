@@ -25,6 +25,7 @@ import com.libreria.dto.CategoriaResponseDTO;
 import com.libreria.dto.LibroDTO;
 import com.libreria.dto.LibroResponseDTO;
 import com.libreria.exception.*;
+import com.libreria.mapper.LibroMapper;
 
 @Service
 public class LibroService {
@@ -34,13 +35,16 @@ public class LibroService {
 
 	private CategoriaService categoriaService;
 	
+	private final LibroMapper libroMapper;
+	
 	
 
 	
-	public LibroService(LibroRepository libroRepository, CategoriaService categoriaService) {
+	public LibroService(LibroRepository libroRepository, CategoriaService categoriaService,LibroMapper libroMapper) {
 		super();
 		this.libroRepository = libroRepository;
 		this.categoriaService = categoriaService;
+		this.libroMapper = libroMapper;
 	}
 
 
@@ -49,7 +53,7 @@ public class LibroService {
 		
 		Categoria categoria = categoriaService.idPrivado(dto.getCategoriaId());
 		
-		Libro libro = new Libro();
+		/*Libro libro = new Libro();
 		libro.setTitulo(dto.getTitulo());
 		libro.setAutor(dto.getAutor());
 		libro.setAnioPublicacion(dto.getAnioPublicacion());
@@ -63,11 +67,16 @@ public class LibroService {
 		libroResponse.setTitulo(dto.getTitulo());
 		libroResponse.setAutor(dto.getAutor());
 		libroResponse.setAnioPublicacion(dto.getAnioPublicacion());
-		libroResponse.setCategoriaId(libro.getCategoria().getNombre());
+		libroResponse.setCategoriaId(libro.getCategoria().getNombre()); */
+		
+		// NUEVA FORMA (Mapper)
+        Libro libro = libroMapper.toEntity(dto);
+        libro.setCategoria(categoria);
+        Libro libroGuardado = libroRepository.save(libro);
 		
 		
 		
-		return libroResponse;
+		return libroMapper.toResponseDTO(libroGuardado);
 	}
 	
 	
@@ -92,6 +101,7 @@ public class LibroService {
 		}
 		*/
 		
+		/*
 		return paginaLibros.map(libro -> {
 	        LibroResponseDTO dto = new LibroResponseDTO();
 	        dto.setTitulo(libro.getTitulo());
@@ -99,7 +109,10 @@ public class LibroService {
 	        dto.setAnioPublicacion(libro.getAnioPublicacion());
 	        dto.setCategoriaId(libro.getCategoria().getNombre());
 	        return dto;
-	    });
+	    }); */
+		
+		// NUEVA FORMA
+        return paginaLibros.map(libroMapper::toResponseDTO);
 	}
 	
 	
@@ -211,11 +224,11 @@ public class LibroService {
 		
 		Libro libro = libroRepository.findById(id).orElseThrow(() -> new RuntimeException("no se encontro el libro con id : " +id));
 		Categoria categoria = categoriaService.idPrivado(nuevoLibro.getCategoriaId());
-		LibroResponseDTO libroResponse = new LibroResponseDTO();
+		//LibroResponseDTO libroResponse = new LibroResponseDTO();
 		
 		
 		
-		libro.setTitulo(nuevoLibro.getTitulo());
+		/*libro.setTitulo(nuevoLibro.getTitulo());
 		libro.setAutor(nuevoLibro.getAutor());
 		libro.setEjemplares(nuevoLibro.getEjemplares());
 		libro.setAnioPublicacion(nuevoLibro.getAnioPublicacion());  
@@ -224,17 +237,19 @@ public class LibroService {
 		libroResponse.setTitulo(nuevoLibro.getTitulo());
 		libroResponse.setAutor(nuevoLibro.getAutor());
 		libroResponse.setAnioPublicacion(nuevoLibro.getAnioPublicacion());
-		libroResponse.setCategoriaId(libro.getCategoria().getNombre());
+		libroResponse.setCategoriaId(libro.getCategoria().getNombre());*/
 		
 	
 		
 		
 		
+		// NUEVA FORMA
+        libroMapper.updateEntityFromDto(nuevoLibro, libro);
+        libro.setCategoria(categoria);
+        libroRepository.save(libro);
 		
-		libroRepository.save(libro);
+		return libroMapper.toResponseDTO(libro);
 		
-		
-		return libroResponse;
 		
 	}
 	
