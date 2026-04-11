@@ -248,7 +248,7 @@ public class LibroService {
         libro.setCategoria(categoria);
         libroRepository.save(libro);
 		
-		return libroMapper.toResponseDTO(libro);
+		return libroMapper.toResponseDTO(libro); 
 		
 		
 	}
