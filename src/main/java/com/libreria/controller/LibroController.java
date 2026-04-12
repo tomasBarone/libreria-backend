@@ -89,7 +89,7 @@ public class LibroController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<LibroResponseDTO> getById(@Valid @PathVariable Long id) throws GlobalExceptionHandler{
+	public ResponseEntity<LibroResponseDTO> getById(@Valid @PathVariable Long id) {
 		
 		LibroResponseDTO libro = libroService.obtenerPorId(id);
 		
