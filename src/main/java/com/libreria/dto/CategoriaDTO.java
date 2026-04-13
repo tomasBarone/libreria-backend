@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+
 public class CategoriaDTO {
 	
 	@NotBlank(message = "El nombre de la categoria es obligatorio")
