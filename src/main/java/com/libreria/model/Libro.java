@@ -57,6 +57,12 @@ public class Libro  extends BaseEntity{
     private Long version;
 	
 	
+	public void reducirEjemplares(int cantidad) {
+        if (this.ejemplares < cantidad) {
+            throw new RuntimeException("Ejemplares insuficientes para el libro: " + this.titulo);
+        }
+        this.ejemplares -= cantidad;
+    }
 
 	public Long getId() {
 		return id;

@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-
+@Table(name = "DETALLE_ORDEN")
 public class DetalleOrden {
 
     @Id
@@ -19,10 +19,13 @@ public class DetalleOrden {
     @JoinColumn(name = "libro_id")
     private Libro libro;
 
+    @Column(name = "CANTIDAD")
     private Integer cantidad;
     
+    @Column(name = "PRECIO_UNITARIO", precision = 19, scale = 2)
     private BigDecimal precioUnitario;
     
+    @Column(name = "SUBTOTAL", precision = 19, scale = 2)
     private BigDecimal subtotal;
     
     public DetalleOrden() {
