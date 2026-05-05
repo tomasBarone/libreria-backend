@@ -1,0 +1,37 @@
+package com.libreria.controller;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.libreria.dto.DetalleOrdenRequest;
+import com.libreria.model.DetalleOrden;
+import com.libreria.model.Orden;
+import com.libreria.service.OrdenService;
+
+@RestController
+@RequestMapping("/api/ordenes")
+public class OrdenController {
+	
+	private final OrdenService ordenService;
+
+	public OrdenController(OrdenService ordenService) {
+		super();
+		this.ordenService = ordenService;
+	}
+	
+	
+	@PostMapping
+	public ResponseEntity<Orden> crearOrden(@RequestBody List<DetalleOrdenRequest> items){
+		
+		Orden nuevaOrden = ordenService.crearOrden(items);
+        return ResponseEntity.ok(nuevaOrden);
+		
+	}
+	
+
+}
