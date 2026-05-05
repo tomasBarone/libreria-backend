@@ -1,5 +1,7 @@
 package com.libreria.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -46,7 +49,12 @@ public class Libro  extends BaseEntity{
 	@Column(name = "ANIO_PUBLICACION")
 	private int anioPublicacion;
 	
+	@Column(name = "PRECIO")
+    private BigDecimal precio;
 	
+	@Version 
+    @Column(name = "VERSION")
+    private Long version;
 	
 	
 
@@ -108,12 +116,29 @@ public class Libro  extends BaseEntity{
 		this.categoria = categoria;
 	}
 
-	@Override
-	public String toString() {
-		return "Libro [id=" + id + ", titulo=" + titulo + ", autor=" + autor + ", isbn=" + isbn + ", ejemplares="
-				+ ejemplares + ", anioPublicacion=" + anioPublicacion + "]";
-	}
 	
+	public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+	
+	
+    @Override
+    public String toString() {
+        return "Libro [id=" + id + ", titulo=" + titulo + ", autor=" + autor + ", isbn=" + isbn + ", ejemplares="
+                + ejemplares + ", anioPublicacion=" + anioPublicacion + ", precio=" + precio + "]";
+    }
 	
 	
 	
