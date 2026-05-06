@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -310,7 +311,10 @@ public class LibroService {
 	
 	// Cada vez que se reducen ejemplares o se actualiza el libro, borramos la caché de ese libro específico
 	@Transactional
-    @CacheEvict(value = "libros", key = "#id")
+	@Caching(evict = {
+	        @CacheEvict(value = "libros", key = "#id"),
+	        @CacheEvict(value = "catalogoGeneral", allEntries = true) // Limpia toda la lista
+	    })
     public void actualizarStock(Long id, Integer cantidad) {
         Libro libro = libroRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
