@@ -25,9 +25,13 @@ public class OrdenController {
 	}
 	
 	
+	/**
+	 * Endpoint para procesar una nueva compra.
+	 * Recibe una lista de libros y cantidades (DTOs) desde el cliente.
+	 */
 	@PostMapping
 	public ResponseEntity<Orden> crearOrden(@RequestBody List<DetalleOrdenRequest> items){
-		
+		// Delega la lógica de negocio al servicio y retorna la orden creada
 		Orden nuevaOrden = ordenService.crearOrden(items);
         return ResponseEntity.ok(nuevaOrden);
 		

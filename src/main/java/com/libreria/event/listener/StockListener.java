@@ -15,9 +15,15 @@ public class StockListener {
         this.libroService = libroService;
     }
 
+    
+    /**
+     * Este método se activa automáticamente cuando un LibroCompradoEvent es publicado.
+     * Su función es actuar como puente entre la Orden y el Servicio de Libros/Caché.
+     */
     @EventListener
     public void procesarCambioStock(LibroCompradoEvent event) {
         
+    	// Llama al servicio de libros para actualizar el estado (esto dispara @CacheEvict del Nivel 5)
         libroService.actualizarStock(event.getLibroId(), event.getCantidad());
     }
 	

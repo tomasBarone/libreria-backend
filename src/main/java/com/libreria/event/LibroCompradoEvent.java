@@ -1,5 +1,10 @@
 package com.libreria.event;
 
+
+/**
+ * Representa un evento de dominio. Es un objeto inmutable (final) que 
+ * transporta los datos mínimos necesarios para que otros componentes reaccionen.
+ */
 public class LibroCompradoEvent {
 	
 	private final Long libroId;
