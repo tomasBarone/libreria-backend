@@ -1,5 +1,7 @@
 package com.libreria.dto;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
@@ -20,11 +22,14 @@ public class LibroDTO {
 	private Long categoriaId;
 	
 	private String isbn;
+	
+	@Min(value = 1000, message = "precio invalido")
+	private BigDecimal precio;
 
 	public LibroDTO(@NotBlank(message = "El titulo es requerido") String titulo,
 			@NotBlank(message = "El autor es requerido") String autor,
 			@Min(value = 1450, message = "Año invalido") int anioPublicacion, @Min(0) int ejemplares,
-			Long categoriaId, String isbn) {
+			Long categoriaId, String isbn,@Min(value = 1000, message = "precio invalido") BigDecimal precio) {
 		super();
 		this.titulo = titulo;
 		this.autor = autor;
@@ -32,6 +37,8 @@ public class LibroDTO {
 		this.ejemplares = ejemplares;
 		this.categoriaId = categoriaId;
 		this.isbn = isbn;
+		this.precio = precio;
+		
 	}
 
 	public String getTitulo() {
@@ -83,7 +90,13 @@ public class LibroDTO {
 	}
 	
 	
+	public BigDecimal getPrecio() {
+		return precio;
+	}
 	
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
+	}
 	
 	
 	
