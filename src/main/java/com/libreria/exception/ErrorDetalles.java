@@ -1,5 +1,6 @@
 package com.libreria.exception;
 
+//clase que estructura el mensaje con informacion de error
 public class ErrorDetalles {
 	
 	private String mensaje;
