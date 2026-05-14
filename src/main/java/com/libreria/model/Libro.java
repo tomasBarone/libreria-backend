@@ -57,6 +57,16 @@ public class Libro  extends BaseEntity{
     private Long version;
 	
 	
+	@ManyToOne
+	@JoinColumn(name = "corriente_id")
+	private CorrienteLiteraria corriente;
+	
+	@ManyToOne
+	@JoinColumn(name = "subgenero_id")
+	private Subgenero subgenero;
+	
+	
+	
 	public void reducirEjemplares(int cantidad) {
         if (this.ejemplares < cantidad) {
             throw new RuntimeException("Ejemplares insuficientes para el libro: " + this.titulo);
@@ -139,8 +149,26 @@ public class Libro  extends BaseEntity{
         this.version = version;
     }
 	
+    
+    
 	
-    @Override
+    public CorrienteLiteraria getCorriente() {
+		return corriente;
+	}
+
+	public void setCorriente(CorrienteLiteraria corriente) {
+		this.corriente = corriente;
+	}
+
+	public Subgenero getSubgenero() {
+		return subgenero;
+	}
+
+	public void setSubgenero(Subgenero subgenero) {
+		this.subgenero = subgenero;
+	}
+
+	@Override
     public String toString() {
         return "Libro [id=" + id + ", titulo=" + titulo + ", autor=" + autor + ", isbn=" + isbn + ", ejemplares="
                 + ejemplares + ", anioPublicacion=" + anioPublicacion + ", precio=" + precio + "]";
