@@ -28,10 +28,10 @@ public class CorrienteLiteraria {
 	}
 
 
-	public CorrienteLiteraria(Long id, String nombre, String perdiodo, String descripcion, String fundamentos,
+	public CorrienteLiteraria( String nombre, String perdiodo, String descripcion, String fundamentos,
 			String caracteristicas) {
 		super();
-		this.id = id;
+	
 		this.nombre = nombre;
 		this.perdiodo = perdiodo;
 		this.descripcion = descripcion;

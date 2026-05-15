@@ -23,9 +23,9 @@ public class Subgenero {
 	@JoinColumn(name = "genero_id")
 	private GeneroLiterario genero;
 
-	public Subgenero(Long id, String nombre, String descripcion, GeneroLiterario genero) {
+	public Subgenero( String nombre, String descripcion, GeneroLiterario genero) {
 		super();
-		this.id = id;
+		
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.genero = genero;

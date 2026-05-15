@@ -28,12 +28,12 @@ public class GeneroLiterario {
 		
 	}
 
-	public GeneroLiterario(Long id, String nombre, String descripcion, List<Subgenero> subgeneros) {
+	public GeneroLiterario( String nombre, String descripcion) {
 		super();
-		this.id = id;
+		
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.subgeneros = subgeneros;
+		
 	}
 
 	public Long getId() {
