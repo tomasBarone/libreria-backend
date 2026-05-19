@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.libreria.dto.LibroDTO;
 import com.libreria.exception.GlobalExceptionHandler;
-import com.libreria.model.Categoria;
+
 import com.libreria.model.Libro;
-import com.libreria.service.CategoriaService;
+
 import com.libreria.service.LibroService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,7 +44,7 @@ public class LibroController {
 	
     
 	private final LibroService libroService;
-	private final CategoriaService categoriaService;
+	
 	
 
 	@GetMapping("/welcome")	
@@ -53,10 +53,10 @@ public class LibroController {
 		return "welcome";
 	}
 
-	public LibroController(LibroService libroService, CategoriaService categoriaService) {
+	public LibroController(LibroService libroService) {
 		super();
 		this.libroService = libroService;
-		this.categoriaService = categoriaService;
+		
 	}
 	
 	
@@ -152,7 +152,7 @@ public class LibroController {
 	}
 	
 	
-	
+	/*
 	//Buscar libro por categoria y año
 	@GetMapping("/buscar/categoria")
 	public ResponseEntity<List<LibroResponseDTO>> listarPorCategoriaYanio(@RequestParam String categoria,@RequestParam int anio){
@@ -161,19 +161,18 @@ public class LibroController {
 		List<LibroResponseDTO> libros = libroService.buscarPorCategoriaYanio(categoria,anio);
 		
 		return ResponseEntity.ok(libros);
-	}
+	}*/
 	
 	
 	
 	//Filtrar busqueda para encontrar libros de una categoria determinada en rango de años
 	@GetMapping("/filtrar-avanzado")
 	public ResponseEntity<Page<LibroResponseDTO>> filtrarLibros(
-	        @RequestParam(required = false) String categoria,
 	        @RequestParam(required = false) Integer anioInicio,
 	        @RequestParam(required = false) Integer anioFin,
 	        Pageable pageable) {
 	    
-	    Page<LibroResponseDTO> libros = libroService.filtrarAvanzado(categoria, anioInicio, anioFin, pageable);
+	    Page<LibroResponseDTO> libros = libroService.filtrarAvanzado( anioInicio, anioFin, pageable);
 	    return ResponseEntity.ok(libros);
 	}
 

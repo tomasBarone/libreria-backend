@@ -11,7 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "corrientes_literarias")
+@Table(name = "generos_literarios")
 public class GeneroLiterario {
 
 	@Id
@@ -24,7 +24,7 @@ public class GeneroLiterario {
 	@OneToMany(mappedBy = "genero" , cascade = CascadeType.ALL)
 	private List <Subgenero> subgeneros;
 	
-	public GeneroLiterario() {
+	public GeneroLiterario(){
 		
 	}
 

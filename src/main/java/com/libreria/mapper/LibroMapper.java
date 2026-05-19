@@ -8,18 +8,19 @@ import com.libreria.dto.LibroDTO;
 import com.libreria.dto.LibroResponseDTO;
 import com.libreria.model.Libro;
 
-@Mapper(componentModel = "spring") // Esto permite inyectarlo con @Autowired
+@Mapper(componentModel = "spring")
 public interface LibroMapper {
 
-    // Convierte de Entidad a DTO (para las respuestas)
-	@Mapping(source = "categoria.nombre", target = "categoriaId")
+    // Ahora mapeamos el nombre de la corriente y el nombre del subgénero
+    @Mapping(source = "corriente.nombre", target = "corrienteNombre")
+    @Mapping(source = "subgenero.nombre", target = "subgeneroNombre")
+    @Mapping(source = "subgenero.genero.nombre", target = "generoNombre") // ¡Mapeo profundo!
     LibroResponseDTO toResponseDTO(Libro libro);
 
-    // Convierte de DTO a Entidad (para guardar)
-    @Mapping(target = "categoria", ignore = true)
-    @Mapping(target = "id", ignore = true) // El ID lo genera la DB
+    @Mapping(target = "corriente", ignore = true)
+    @Mapping(target = "subgenero", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Libro toEntity(LibroDTO libroDTO);
 
-    // Para actualizar una entidad existente sin crear una nueva
     void updateEntityFromDto(LibroDTO dto, @MappingTarget Libro entity);
 }

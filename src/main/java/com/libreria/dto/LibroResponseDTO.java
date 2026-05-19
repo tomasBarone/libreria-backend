@@ -1,6 +1,9 @@
 package com.libreria.dto;
 
-import com.libreria.model.Categoria;
+
+
+import com.libreria.model.CorrienteLiteraria;
+import com.libreria.model.Subgenero;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
@@ -23,12 +26,16 @@ public class LibroResponseDTO {
 	@Schema(example = "Jorge Luis Borges")
 	private String autor;
 	
-	@Schema(example = "Novela")
-	private String categoriaNombre;
 	
 	@Schema(example = "1949")
 	@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta")
 	private int anioPublicacion;
+	
+	private String corrienteNombre; 
+	
+    private String subgeneroNombre;
+    
+    private String generoNombre; 
 
 	
 	
@@ -48,12 +55,12 @@ public class LibroResponseDTO {
 
 
 	public LibroResponseDTO(@NotBlank(message = "El titulo no puede estar vacio") String titulo,
-			@NotBlank(message = "El autor es obligatorio") String autor, String categoriaNombre,
+			@NotBlank(message = "El autor es obligatorio") String autor, 
 			@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta") int anioPublicacion) {
 		super();
 		this.titulo = titulo;
 		this.autor = autor;
-		this.categoriaNombre = categoriaNombre;
+		
 		this.anioPublicacion = anioPublicacion;
 	}
 
@@ -78,14 +85,6 @@ public class LibroResponseDTO {
 	}
 
 
-	public String getCategoriaNombre() {
-		return categoriaNombre;
-	}
-
-
-	public void setCategoriaId(String categoriaNombre) {
-		this.categoriaNombre = categoriaNombre;
-	}
 
 
 	public int getAnioPublicacion() {
@@ -96,6 +95,43 @@ public class LibroResponseDTO {
 	public void setAnioPublicacion(int anioPublicacion) {
 		this.anioPublicacion = anioPublicacion;
 	}
+
+
+
+	public String getCorrienteNombre() {
+		return corrienteNombre;
+	}
+
+
+
+	public void setCorrienteNombre(String corrienteNombre) {
+		this.corrienteNombre = corrienteNombre;
+	}
+
+
+
+	public String getSubgeneroNombre() {
+		return subgeneroNombre;
+	}
+
+
+
+	public void setSubgeneroNombre(String subgeneroNombre) {
+		this.subgeneroNombre = subgeneroNombre;
+	}
+
+
+
+	public String getGeneroNombre() {
+		return generoNombre;
+	}
+
+
+
+	public void setGeneroNombre(String generoNombre) {
+		this.generoNombre = generoNombre;
+	}
+	
 	
 	
 	

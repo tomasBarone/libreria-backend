@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.libreria.dto.LibroResponseDTO;
 import com.libreria.exception.GlobalExceptionHandler;
-import com.libreria.model.Categoria;
+
 import com.libreria.model.Libro;
 import com.libreria.repository.LibroRepository;
 import com.libreria.service.LibroService;
@@ -35,14 +35,13 @@ class LibroServiceTest {
     @Test
     void cuandoObtenerPorId_siExiste_debeRetornarLibroDTO() {
    
-        Categoria catFalsa = new Categoria();
-        catFalsa.setNombre("Filosofia");
+       
 
       
         Libro libroFalso = new Libro();
         libroFalso.setId(1L);
         libroFalso.setTitulo("Test Book");
-        libroFalso.setCategoria(catFalsa); 
+        
 
         // Configuramos el Mockito
         when(libroRepository.findById(1L)).thenReturn(Optional.of(libroFalso));
@@ -52,7 +51,7 @@ class LibroServiceTest {
 
         // 3. ASSERT
         assertNotNull(resultado);
-        assertEquals("Filosofia", resultado.getCategoriaNombre());
+        
     }
     
     @Test

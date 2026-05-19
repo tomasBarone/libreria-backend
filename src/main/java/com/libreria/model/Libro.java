@@ -41,9 +41,7 @@ public class Libro  extends BaseEntity{
 	@Column(name = "EJEMPLARES")
 	private int ejemplares;
 	
-	@ManyToOne
-	@JoinColumn(name = "categoria_id")
-	private Categoria categoria;
+	
 	
 	@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta")
 	@Column(name = "ANIO_PUBLICACION")
@@ -56,6 +54,8 @@ public class Libro  extends BaseEntity{
     @Column(name = "VERSION")
     private Long version;
 	
+	@Column(length = 1000)
+    private String sinopsis;
 	
 	@ManyToOne
 	@JoinColumn(name = "corriente_id")
@@ -124,13 +124,6 @@ public class Libro  extends BaseEntity{
 
 	
 	
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
 
 	
 	public BigDecimal getPrecio() {
@@ -166,6 +159,17 @@ public class Libro  extends BaseEntity{
 
 	public void setSubgenero(Subgenero subgenero) {
 		this.subgenero = subgenero;
+	}
+	
+	
+	
+
+	public String getSinopsis() {
+		return sinopsis;
+	}
+
+	public void setSinopsis(String sinopsis) {
+		this.sinopsis = sinopsis;
 	}
 
 	@Override

@@ -35,7 +35,7 @@ public class DataInitializer implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         
-        // --- 1. SEGURIDAD (Tu código original) ---
+        // --- 1. SEGURIDAD
         RoleEntity adminRole = roleRepository.findByRoleName(RoleEnum.ADMIN)
                 .orElseGet(() -> roleRepository.save(new RoleEntity(RoleEnum.ADMIN)));
 
@@ -75,7 +75,7 @@ public class DataInitializer implements CommandLineRunner {
         		 new CorrienteLiteraria("Realismo y Naturalismo", "XIX - Segunda Mitad" , "Como reaccion al excesp sentimental del Romanticismo, surge el deseo de retratar la realidad tal cual es. ", "La observacion casi cientifica de la sociedad" , "Descripciones minuciosas, lenguaje cotidiano y enofque en problemas sociales(pobreza,burguesia, injusticia. El NATURALISMO es un realismo extrem que cree que el hombre esta determiando por su herencia y su entorno"),
         		 new CorrienteLiteraria("Modernismo" , "Finales del XIX - Principios del XX" , "Surge en Hispanoamerica con Ruben Dario" , "La busqueda de la belleza absoluta y el refinamiento estetico" , "Uso de simbolos (como el cisne), exotismo(palacios, princesas, Oriente) y una musicalidad muy marcada en el verso"),
         		 new CorrienteLiteraria("Vanguardismo" , "Principios del XX" , "Conjunto de movimientos(Ismos: Surrealismo, Futurismo, Dadaismo) tras la primera guerra mundial" , "La ruptura total con el pasado y la experimentacion", "Alteracion del orden logico, versolibrismo, caligramas y exploracion del subconciente"),
-        		 new CorrienteLiteraria("Posmodernidad" , "Mitad del XX - Actualidad","etc" , "El juego con la estructura narrativa y el Realismo Magico","Fragmentacion del tiempo, multiplicidad de narradores y la mezcla de lo fantastico con lo cotidiano de forma natural")
+        		 new CorrienteLiteraria("Posmodernidad" , "Mitad del XX - Actualidad","Libros contemporaneos" , "El juego con la estructura narrativa y el Realismo Magico","Fragmentacion del tiempo, multiplicidad de narradores y la mezcla de lo fantastico con lo cotidiano de forma natural")
         ));
 
         // Carga de Géneros y sus Subgéneros

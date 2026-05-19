@@ -13,9 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.libreria.model.Categoria;
+
 import com.libreria.model.Libro;
-import com.libreria.repository.CategoriaRepository;
+
 import com.libreria.repository.LibroRepository;
 
 import jakarta.transaction.Transactional;
@@ -23,8 +23,7 @@ import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import com.libreria.dto.CategoriaDTO;
-import com.libreria.dto.CategoriaResponseDTO;
+
 import com.libreria.dto.LibroDTO;
 import com.libreria.dto.LibroResponseDTO;
 import com.libreria.exception.*;
@@ -36,17 +35,16 @@ public class LibroService {
 	
 	private final LibroRepository libroRepository;
 
-	private CategoriaService categoriaService;
+
 	
 	private final LibroMapper libroMapper;
 	
 	
 
 	
-	public LibroService(LibroRepository libroRepository, CategoriaService categoriaService,LibroMapper libroMapper) {
+	public LibroService(LibroRepository libroRepository,LibroMapper libroMapper) {
 		super();
 		this.libroRepository = libroRepository;
-		this.categoriaService = categoriaService;
 		this.libroMapper = libroMapper;
 	}
 
@@ -54,7 +52,7 @@ public class LibroService {
 	//Crear un libro
 	public LibroResponseDTO guardarLibro(LibroDTO dto) {
 		
-		Categoria categoria = categoriaService.idPrivado(dto.getCategoriaId());
+		
 		
 		/*Libro libro = new Libro();
 		libro.setTitulo(dto.getTitulo());
@@ -74,7 +72,7 @@ public class LibroService {
 		
 		// NUEVA FORMA (Mapper)
         Libro libro = libroMapper.toEntity(dto);
-        libro.setCategoria(categoria);
+        
         Libro libroGuardado = libroRepository.save(libro);
 		
 		
@@ -139,7 +137,7 @@ public class LibroService {
 		LibroResponseDTO libroResponse = new LibroResponseDTO();
 		libroResponse.setAnioPublicacion(libro.getAnioPublicacion());
 		libroResponse.setAutor(libro.getAutor());
-		libroResponse.setCategoriaId(libro.getCategoria().getNombre());
+		
 		libroResponse.setTitulo(libro.getTitulo());
 		
 		
@@ -184,7 +182,7 @@ public class LibroService {
 			LibroResponseDTO lib = new LibroResponseDTO();
 			lib.setAnioPublicacion(libro.get(i).getAnioPublicacion());
 			lib.setAutor(libro.get(i).getAutor());
-			lib.setCategoriaId(libro.get(i).getCategoria().getNombre());
+			
 			lib.setTitulo(libro.get(i).getTitulo());
 			libroResponse.add(lib);
 			
@@ -227,7 +225,7 @@ public class LibroService {
 	public LibroResponseDTO actualizar(Long id, LibroDTO nuevoLibro) {
 		
 		Libro libro = libroRepository.findById(id).orElseThrow(() -> new RuntimeException("no se encontro el libro con id : " +id));
-		Categoria categoria = categoriaService.idPrivado(nuevoLibro.getCategoriaId());
+		
 		//LibroResponseDTO libroResponse = new LibroResponseDTO();
 		
 		
@@ -249,7 +247,7 @@ public class LibroService {
 		
 		// NUEVA FORMA
         libroMapper.updateEntityFromDto(nuevoLibro, libro);
-        libro.setCategoria(categoria);
+        
         libroRepository.save(libro);
 		
 		return libroMapper.toResponseDTO(libro); 
@@ -269,7 +267,7 @@ public class LibroService {
 
 
 	
-	
+	/*
 	public List<LibroResponseDTO> buscarPorCategoriaYanio(String categoria, int anio) {
 	
 		//List<CategoriaResponseDTO> categorias = categoriaService.getAll();
@@ -291,18 +289,18 @@ public class LibroService {
 	    
 		return librosResponse;
 	}
-
+*/
 
 
 	
-	public Page<LibroResponseDTO> filtrarAvanzado(String cat, Integer inicio, Integer fin, Pageable pageable) {
-	    return libroRepository.filtrarLibrosPro(cat, inicio, fin, pageable)  
+	public Page<LibroResponseDTO> filtrarAvanzado( Integer inicio, Integer fin, Pageable pageable) {
+	    return libroRepository.filtrarLibrosPro( inicio, fin, pageable)  
 	            .map(l -> {
 	                LibroResponseDTO dto = new LibroResponseDTO();
 	                dto.setTitulo(l.getTitulo());
 	                dto.setAutor(l.getAutor());
 	                dto.setAnioPublicacion(l.getAnioPublicacion());
-	                dto.setCategoriaId(l.getCategoria().getNombre());
+	                
 	                return dto;
 	            });
 	}
