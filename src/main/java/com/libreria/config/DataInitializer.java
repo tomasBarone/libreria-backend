@@ -89,16 +89,18 @@ public class DataInitializer implements CommandLineRunner {
         GeneroLiterario lirico = generoRepo.save(new GeneroLiterario("Lírico", "Expresión de sentimientos subjetivos generalmente a traves del verso"));
         subgeneroRepo.save(new Subgenero("Soneto", "Composición de 14 versos", lirico));
         subgeneroRepo.save(new Subgenero("Oda", "Poema de tono elevado", lirico));
+        subgeneroRepo.save(new Subgenero("Elegia", "Poema de duelo por una perdida", lirico));
 
         // DRAMÁTICO
         GeneroLiterario dramatico = generoRepo.save(new GeneroLiterario("Dramático", "Obras creadas para ser representadas ante un publico mediante el dialogo de los personajes"));
         subgeneroRepo.save(new Subgenero("Tragedia", "Conflictos fatales", dramatico));
         subgeneroRepo.save(new Subgenero("Comedia", "Tono alegre y final feliz", dramatico));
+        subgeneroRepo.save(new Subgenero("Drama", "Mezcla de elementos tragicos y comicos", dramatico));
         
         //DIDACTICO
         GeneroLiterario didactico = generoRepo.save(new GeneroLiterario("Didactico","Su finalidad principal es la enseñanza o la divulgacion de ideas"));
         subgeneroRepo.save(new Subgenero("Ensayo","Escrito en prosa donde el autor exponse su punto de vista sobre un tema",didactico));
-        subgeneroRepo.save(new Subgenero("Ensayo","Escrito en prosa donde el autor exponse su punto de vista sobre un tema",didactico));
-        subgeneroRepo.save(new Subgenero("Ensayo","Escrito en prosa donde el autor exponse su punto de vista sobre un tema",didactico));
+        subgeneroRepo.save(new Subgenero("Biografia","Narracion de la vida de una persona",didactico));
+        subgeneroRepo.save(new Subgenero("Oratoria","El arte de hablar con elocuencia para persuadir",didactico));
     }
 }
