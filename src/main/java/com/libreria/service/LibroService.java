@@ -180,6 +180,10 @@ public class LibroService {
 			 LibroResponseDTO lib = new LibroResponseDTO("", "");
 			 lib.setAutor(LibrosEncontrados.get(i).getAutor());
 			 lib.setTitulo(LibrosEncontrados.get(i).getTitulo());
+			 lib.setAnioPublicacion(LibrosEncontrados.get(i).getAnioPublicacion());
+			 lib.setCorrienteNombre(LibrosEncontrados.get(i).getCorriente().getNombre());
+			 lib.setSubgeneroNombre(LibrosEncontrados.get(i).getSubgenero().getNombre());
+			 lib.setGeneroNombre(LibrosEncontrados.get(i).getSubgenero().getGenero().getNombre());
 			 libroResponse.add(lib);
 			 
 		 }
@@ -200,8 +204,10 @@ public class LibroService {
 			LibroResponseDTO lib = new LibroResponseDTO();
 			lib.setAnioPublicacion(libro.get(i).getAnioPublicacion());
 			lib.setAutor(libro.get(i).getAutor());
-			
 			lib.setTitulo(libro.get(i).getTitulo());
+			lib.setCorrienteNombre(libro.get(i).getCorriente().getNombre());
+		    lib.setSubgeneroNombre(libro.get(i).getSubgenero().getNombre());
+	  	    lib.setGeneroNombre(libro.get(i).getSubgenero().getGenero().getNombre());
 			libroResponse.add(lib);
 			
 			
@@ -228,6 +234,10 @@ public class LibroService {
 			LibroResponseDTO lib = new LibroResponseDTO();
 			lib.setAnioPublicacion(libros.get(i).getAnioPublicacion());
 			lib.setTitulo(libros.get(i).getTitulo());
+			lib.setAutor(libros.get(i).getAutor());
+			lib.setCorrienteNombre(libros.get(i).getCorriente().getNombre());
+			lib.setSubgeneroNombre(libros.get(i).getSubgenero().getNombre());
+			lib.setGeneroNombre(libros.get(i).getSubgenero().getGenero().getNombre());
 			libroResponse.add(lib);
 			
 			
