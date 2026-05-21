@@ -19,25 +19,31 @@ public class LibroDTO {
 	@Min(0)
 	private int ejemplares;
 	
-	private Long categoriaId;
+	private Long corrienteId;
+	
+	private Long subgeneroId;
 	
 	private String isbn;
 	
 	@Min(value = 1000, message = "precio invalido")
 	private BigDecimal precio;
+	
+	private String sinopsis;
 
 	public LibroDTO(@NotBlank(message = "El titulo es requerido") String titulo,
 			@NotBlank(message = "El autor es requerido") String autor,
 			@Min(value = 1450, message = "Año invalido") int anioPublicacion, @Min(0) int ejemplares,
-			Long categoriaId, String isbn,@Min(value = 1000, message = "precio invalido") BigDecimal precio) {
+			Long corrienteId, Long subgeneroId, String isbn,@Min(value = 1000, message = "precio invalido") BigDecimal precio, String sinopsis) {
 		super();
 		this.titulo = titulo;
 		this.autor = autor;
 		this.anioPublicacion = anioPublicacion;
 		this.ejemplares = ejemplares;
-		this.categoriaId = categoriaId;
+		this.corrienteId = corrienteId;
+		this.subgeneroId = subgeneroId;
 		this.isbn = isbn;
 		this.precio = precio;
+		this.sinopsis = sinopsis;
 		
 	}
 
@@ -73,12 +79,22 @@ public class LibroDTO {
 		this.ejemplares = ejemplares;
 	}
 
-	public Long getCategoriaId() {
-		return categoriaId;
+	
+
+	public Long getCorrienteId() {
+		return corrienteId;
 	}
 
-	public void setCategoriaId(Long categoriaId) {
-		this.categoriaId = categoriaId;
+	public void setCorrienteId(Long corrienteId) {
+		this.corrienteId = corrienteId;
+	}
+
+	public Long getSubgeneroId() {
+		return subgeneroId;
+	}
+
+	public void setSubgeneroId(Long subgeneroId) {
+		this.subgeneroId = subgeneroId;
 	}
 
 	public String getIsbn() {
@@ -96,6 +112,14 @@ public class LibroDTO {
 	
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
+	}
+
+	public String getSinopsis() {
+		return sinopsis;
+	}
+
+	public void setSinopsis(String sinopsis) {
+		this.sinopsis = sinopsis;
 	}
 	
 	

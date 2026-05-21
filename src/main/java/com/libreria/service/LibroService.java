@@ -13,11 +13,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
+import com.libreria.model.CorrienteLiteraria;
 import com.libreria.model.Libro;
-
+import com.libreria.model.Subgenero;
+import com.libreria.repository.CorrienteRepository;
 import com.libreria.repository.LibroRepository;
+import com.libreria.repository.SubgeneroRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
@@ -34,17 +37,19 @@ public class LibroService {
 	
 	
 	private final LibroRepository libroRepository;
-
+    private final CorrienteRepository corrienteRepo;
+    private final SubgeneroRepository subgeneroRepo;
 
 	
 	private final LibroMapper libroMapper;
 	
 	
-
-	
-	public LibroService(LibroRepository libroRepository,LibroMapper libroMapper) {
+	public LibroService(LibroRepository libroRepository, CorrienteRepository corrienteRepo,
+			SubgeneroRepository subgeneroRepo, LibroMapper libroMapper) {
 		super();
 		this.libroRepository = libroRepository;
+		this.corrienteRepo = corrienteRepo;
+		this.subgeneroRepo = subgeneroRepo;
 		this.libroMapper = libroMapper;
 	}
 
@@ -72,6 +77,17 @@ public class LibroService {
 		
 		// NUEVA FORMA (Mapper)
         Libro libro = libroMapper.toEntity(dto);
+        
+     // 2. Buscamos las entidades reales en la DB por los IDs que vienen en el DTO
+        CorrienteLiteraria corriente = corrienteRepo.findById(dto.getCorrienteId())
+            .orElseThrow(() -> new EntityNotFoundException("Corriente no encontrada"));
+            
+        Subgenero subgenero = subgeneroRepo.findById(dto.getSubgeneroId())
+            .orElseThrow(() -> new EntityNotFoundException("Subgenero no encontrado"));
+
+        // 3. Seteamos las relaciones
+        libro.setCorriente(corriente);
+        libro.setSubgenero(subgenero);
         
         Libro libroGuardado = libroRepository.save(libro);
 		
@@ -137,8 +153,10 @@ public class LibroService {
 		LibroResponseDTO libroResponse = new LibroResponseDTO();
 		libroResponse.setAnioPublicacion(libro.getAnioPublicacion());
 		libroResponse.setAutor(libro.getAutor());
-		
 		libroResponse.setTitulo(libro.getTitulo());
+		libroResponse.setCorrienteNombre(libro.getCorriente().getNombre());
+		libroResponse.setGeneroNombre(libro.getSubgenero().getGenero().getNombre());
+		libroResponse.setSubgeneroNombre(libro.getSubgenero().getNombre());
 		
 		
 		return libroResponse;

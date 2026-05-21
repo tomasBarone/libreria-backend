@@ -22,6 +22,10 @@ public class Subgenero {
 	@ManyToOne
 	@JoinColumn(name = "genero_id")
 	private GeneroLiterario genero;
+	
+	public Subgenero() {
+		
+	}
 
 	public Subgenero( String nombre, String descripcion, GeneroLiterario genero) {
 		super();

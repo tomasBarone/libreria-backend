@@ -56,12 +56,14 @@ public class LibroResponseDTO {
 
 	public LibroResponseDTO(@NotBlank(message = "El titulo no puede estar vacio") String titulo,
 			@NotBlank(message = "El autor es obligatorio") String autor, 
-			@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta") int anioPublicacion) {
+			@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta") int anioPublicacion, String corrienteNombre,String subgeneroNombre,String generoNombre) {
 		super();
 		this.titulo = titulo;
 		this.autor = autor;
-		
 		this.anioPublicacion = anioPublicacion;
+		this.corrienteNombre = corrienteNombre;
+		this.subgeneroNombre = subgeneroNombre;
+		this.generoNombre = generoNombre;
 	}
 
 
