@@ -37,37 +37,28 @@ public class OrdenService {
 	 */
 	
 	@Transactional
-    public Orden crearOrden(List<DetalleOrdenRequest> items) {
-        Orden orden = new Orden();
-        orden.setEstado("PENDIENTE");
+	public Orden crearOrden(List<DetalleOrdenRequest> items) {
+	    Orden orden = new Orden();
+	    orden.setEstado("PENDIENTE");
 
-     // Convertimos los DTOs recibidos en entidades de DetalleOrden
-        List<DetalleOrden> detalles = items.stream().map(item -> {
-        	// Buscamos el libro en la DB
-            Libro libro = libroRepository.findById(item.getLibroId())
-                    .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
-            
-            
-         // PASO A: Lógica local (persistencia de la orden)
-            DetalleOrden detalle = new DetalleOrden(libro, item.getCantidad());
+	    List<DetalleOrden> detalles = items.stream().map(item -> {
+	        Libro libro = libroRepository.findById(item.getLibroId())
+	                .orElseThrow(() -> new RuntimeException("El libro con ID " + item.getLibroId() + " no existe."));
+	        
+	        // 1. Creamos la instancia una sola vez usando el constructor que calcula los subtotales automáticamente
+	        DetalleOrden detalle = new DetalleOrden(libro, item.getCantidad());
 
-            // PASO B: Publicar Evento
-            // Esto activará el StockListener para limpiar caché y actualizar stock de forma desacoplada
-            eventPublisher.publishEvent(new LibroCompradoEvent(item.getLibroId(), item.getCantidad()));
+	        // 2. Publicamos el evento síncrono local para impactar el stock y limpiar Redis
+	        eventPublisher.publishEvent(new LibroCompradoEvent(item.getLibroId(), item.getCantidad()));
 
-        
-            
-            
-         // Creamos la relación entre el detalle y el producto
-            return new DetalleOrden(libro, item.getCantidad());
-        }).collect(Collectors.toList());
+	        // 3. Retornamos la instancia correcta ya calculada
+	        return detalle;
+	    }).collect(Collectors.toList());
 
-     // Vinculamos detalles a la orden y calculamos el monto total
-        orden.getDetalles().addAll(detalles);
-        orden.calcularTotal();
-        
-     // Persistimos la orden final
-        return ordenRepository.save(orden);
-    }
+	    orden.getDetalles().addAll(detalles);
+	    orden.calcularTotal(); // Aseguramos que la orden sume todos sus subtotales
+	    
+	    return ordenRepository.save(orden);
+	}
 
 }
