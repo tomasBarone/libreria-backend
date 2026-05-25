@@ -177,7 +177,7 @@ public class LibroService {
 		 
 		 for(int i = 0; i < LibrosEncontrados.size(); i++) {
 			 
-			 LibroResponseDTO lib = new LibroResponseDTO("", "");
+			  LibroResponseDTO lib = new LibroResponseDTO("", "");
 			 lib.setAutor(LibrosEncontrados.get(i).getAutor());
 			 lib.setTitulo(LibrosEncontrados.get(i).getTitulo());
 			 lib.setAnioPublicacion(LibrosEncontrados.get(i).getAnioPublicacion());
