@@ -47,13 +47,27 @@ public class JwtUtils {
     
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder() //
+            // Imprimimos la longitud para verificar si no tiene caracteres de más
+            System.out.println("[DEBUG JWT] Longitud del token recibido en validateToken: " + token.length());
+            
+            Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
             
+            System.out.println("[DEBUG JWT] ¡Token verificado con éxito en el Parser!");
+            return true;
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            System.out.println("❌ ERROR JWT: La firma no coincide. El string del token fue alterado o mal codificado. Mensaje: " + e.getMessage());
+            return false;
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            System.out.println("❌ ERROR JWT: El token está vencido. Mensaje: " + e.getMessage());
+            return false;
+        } catch (io.jsonwebtoken.MalformedJwtException e) {
+            System.out.println("❌ ERROR JWT: El token es de estructura inválida (Malformed). Chequear comillas o caracteres extra. Mensaje: " + e.getMessage());
+            return false;
+        } catch (JwtException | IllegalArgumentException e) {
+            System.out.println("❌ ERROR JWT GENERAL: " + e.getMessage());
             return false;
         }
     }

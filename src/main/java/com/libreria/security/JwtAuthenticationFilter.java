@@ -29,33 +29,53 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response, 
                                     FilterChain filterChain) throws ServletException, IOException {
         
-        // 1. Obtener el header de autorizacion
+    	System.out.println("====== NUEVA PETICION EN EL FILTRO ======");
+        System.out.println("Metodo HTTP: " + request.getMethod());
+        System.out.println("URL solicitada: " + request.getRequestURI());
+
         String authHeader = request.getHeader("Authorization");
+        System.out.println("Header Authorization recibido: " + authHeader);
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7); // Saltamos "Bearer "
+        try {
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                System.out.println("Token extraido en el Back: " + token);
 
-            // 2. Validar el token (JwtUtils)
-            if (jwtUtils.validateToken(token)) {
-                String username = jwtUtils.getUsernameFromToken(token);
+                // Intentamos validar
+                boolean esValido = jwtUtils.validateToken(token);
+                System.out.println("¿jwtUtils.validateToken() es valido?: " + esValido);
 
-                // 3. Si el usuario no esta ya autenticado en el contexto de Spring
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (esValido) {
+                    String username = jwtUtils.getUsernameFromToken(token);
+                    System.out.println("Usuario extraido del token: " + username);
 
-                    // 4. Creamos la "identidad" de autenticacion
-                    UsernamePasswordAuthenticationToken authToken = 
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    
-                    // 5. La guardamos (SecurityContext)
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                        System.out.println("Buscando UserDetails en la Base de Datos para: " + username);
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                        System.out.println("UserDetails cargado. Roles/Authorities: " + userDetails.getAuthorities());
+
+                        UsernamePasswordAuthenticationToken authToken = 
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                        System.out.println("¡CONTECTO DE SEGURIDAD CONFIGURADO CON ÉXITO para " + username + "!");
+                    } else {
+                        System.out.println("AVISO: El usuario ya estaba autenticado o el username vino null.");
+                    }
+                } else {
+                    System.out.println("❌ RECHAZADO: jwtUtils.validateToken(token) devolvio FALSE.");
                 }
+            } else {
+                System.out.println("AVISO: No se proceso token porque el header es null o no empieza con 'Bearer '");
             }
+        } catch (Exception e) {
+            // Si salta un error de token vencido, firma invalida o usuario inexistente, lo vemos acá:
+            System.out.println("❌ EXCEPCIÓN EN EL FILTRO JWT: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        
         filterChain.doFilter(request, response);
-    }
 }
 
+}
 
