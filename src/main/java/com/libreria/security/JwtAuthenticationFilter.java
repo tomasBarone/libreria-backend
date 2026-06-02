@@ -69,7 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 System.out.println("AVISO: No se proceso token porque el header es null o no empieza con 'Bearer '");
             }
         } catch (Exception e) {
-            // Si salta un error de token vencido, firma invalida o usuario inexistente, lo vemos acá:
+             // Si salta un error de token vencido, firma invalida o usuario inexistente, lo vemos acá:
             System.out.println("❌ EXCEPCIÓN EN EL FILTRO JWT: " + e.getMessage());
             e.printStackTrace();
         }
