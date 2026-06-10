@@ -1,5 +1,7 @@
 package com.libreria.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,7 @@ public class Subgenero {
 	
 	@ManyToOne
 	@JoinColumn(name = "genero_id")
+	@JsonIgnoreProperties("subgeneros")
 	private GeneroLiterario genero;
 	
 	public Subgenero() {

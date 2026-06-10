@@ -350,12 +350,55 @@ public class LibroService {
         libroRepository.save(libro);
     }
 
-
-	public List<Libro> buscarPorMovimiento(Long movimientoId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	public List<LibroResponseDTO> buscarPorMovimiento(Long movimientoId) {
+	    if (!corrienteRepo.existsById(movimientoId)) {
+	        throw new RuntimeException("Error: El movimiento literario no existe");
+	    }
+
+	    // 1. Buscamos las entidades reales en la base de datos
+	    List<Libro> librosEntidad = libroRepository.findByCorrienteId(movimientoId);
+
+	    // 2. Las mapeamos a DTO para limpiar las referencias circulares y proteger la arquitectura
+	    return librosEntidad.stream()
+	            .map(libroMapper::toResponseDTO)
+	            .toList();
+	}
 	
 
 }

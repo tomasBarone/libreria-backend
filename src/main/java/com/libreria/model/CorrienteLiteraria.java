@@ -98,6 +98,13 @@ public class CorrienteLiteraria {
 	public void setCaracteristicas(String caracteristicas) {
 		this.caracteristicas = caracteristicas;
 	}
+
+
+	@Override
+	public String toString() {
+		return "CorrienteLiteraria [id=" + id + ", nombre=" + nombre + ", perdiodo=" + perdiodo + ", descripcion="
+				+ descripcion + ", fundamentos=" + fundamentos + ", caracteristicas=" + caracteristicas + "]";
+	}
 	
 	
 	

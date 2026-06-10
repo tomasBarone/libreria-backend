@@ -23,10 +23,7 @@ public interface LibroRepository extends JpaRepository<Libro, Long>{
 	@Query("SELECT l FROM Libro l WHERE " +
 		       "(:inicio IS NULL OR l.anioPublicacion >= :inicio) AND " +
 		       "(:fin IS NULL OR l.anioPublicacion <= :fin)")
-		Page<Libro> filtrarLibrosPro(
-		    
-		    @Param("inicio") Integer inicio, 
-		    @Param("fin") Integer fin, 
-		    Pageable pageable
-		);
+		Page<Libro> filtrarLibrosPro( @Param("inicio") Integer inicio, @Param("fin") Integer fin, Pageable pageable);
+	
+	List<Libro> findByCorrienteId(Long movimientoId);
 }

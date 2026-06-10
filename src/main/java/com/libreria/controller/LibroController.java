@@ -177,5 +177,13 @@ public class LibroController {
 	    Page<LibroResponseDTO> libros = libroService.filtrarAvanzado( anioInicio, anioFin, pageable);
 	    return ResponseEntity.ok(libros);
 	}
+	
+	
+	
+	@GetMapping("/movimiento/{movimientoId}")
+	public ResponseEntity<List<LibroResponseDTO>> listarPorMovimiento(@PathVariable Long movimientoId) {
+	    List<LibroResponseDTO> libros = libroService.buscarPorMovimiento(movimientoId);
+	    return ResponseEntity.ok(libros);
+	}
 
 }
