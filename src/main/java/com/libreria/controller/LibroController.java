@@ -62,7 +62,7 @@ public class LibroController {
 	
 	
      //POST: Crear un Libro
-	@PostMapping
+	@PostMapping("/crear")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<LibroResponseDTO> crearLibro(@Valid @RequestBody LibroDTO libroDTO){
 		

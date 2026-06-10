@@ -151,6 +151,7 @@ public class LibroService {
 		Libro libro = libroRepository.findById(id).orElseThrow(() -> new RuntimeException("No se encontro el libro con id: "+id));
 		
 		LibroResponseDTO libroResponse = new LibroResponseDTO();
+		libroResponse.setId(libro.getId());
 		libroResponse.setAnioPublicacion(libro.getAnioPublicacion());
 		libroResponse.setAutor(libro.getAutor());
 		libroResponse.setTitulo(libro.getTitulo());
@@ -348,6 +349,12 @@ public class LibroService {
         libro.reducirEjemplares(cantidad);
         libroRepository.save(libro);
     }
+
+
+	public List<Libro> buscarPorMovimiento(Long movimientoId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 

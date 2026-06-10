@@ -17,7 +17,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class LibroResponseDTO {
 	
-
+	private Long id;
 	@Schema(example = "El Aleph")
 	@NotBlank(message = "El titulo no puede estar vacio")
 	private String titulo;
@@ -54,18 +54,15 @@ public class LibroResponseDTO {
 
 
 
-	public LibroResponseDTO(@NotBlank(message = "El titulo no puede estar vacio") String titulo,
-			@NotBlank(message = "El autor es obligatorio") String autor, 
-			@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta") int anioPublicacion, String corrienteNombre,String subgeneroNombre,String generoNombre) {
-		super();
-		this.titulo = titulo;
-		this.autor = autor;
-		this.anioPublicacion = anioPublicacion;
-		this.corrienteNombre = corrienteNombre;
-		this.subgeneroNombre = subgeneroNombre;
-		this.generoNombre = generoNombre;
-	}
-
+	public LibroResponseDTO(Long id, String titulo, String autor, int anioPublicacion, String corrienteNombre, String subgeneroNombre, String generoNombre) {
+                     this.id = id;
+                     this.titulo = titulo;
+                     this.autor = autor;
+                     this.anioPublicacion = anioPublicacion;
+                     this.corrienteNombre = corrienteNombre;
+                     this.subgeneroNombre = subgeneroNombre;
+                     this.generoNombre = generoNombre;
+}
 
 	public String getTitulo() {
 		return titulo;
@@ -132,6 +129,18 @@ public class LibroResponseDTO {
 
 	public void setGeneroNombre(String generoNombre) {
 		this.generoNombre = generoNombre;
+	}
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	
