@@ -1,42 +1,51 @@
-package com.libreria.model;
+package com.libreria.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "corrientes_literarias")
-public class CorrienteLiteraria {
+
+@JsonInclude(JsonInclude.Include.NON_NULL) // Oculta automáticamente lo que sea null
+public class CorrienteResponseDTO {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	
+    private Long id;
 	private String nombre;
-	private String periodo;
-	@Column(length = 1000)
+	private String periodo; 
 	private String descripcion;
 	private String fundamentos;
 	private String caracteristicas;
 	
 	
-	public CorrienteLiteraria() {
+	public CorrienteResponseDTO() {
 		
 	}
 
 
-	public CorrienteLiteraria( String nombre, String perdiodo, String descripcion, String fundamentos,
+	public CorrienteResponseDTO(Long id, String nombre, String perdiodo, String descripcion, String fundamentos,
 			String caracteristicas) {
 		super();
-	
+		this.id = id;
 		this.nombre = nombre;
 		this.periodo = perdiodo;
 		this.descripcion = descripcion;
 		this.fundamentos = fundamentos;
 		this.caracteristicas = caracteristicas;
+	}
+	
+	
+	public CorrienteResponseDTO(Long id, String nombre) {
+		this.id = id;
+		this.nombre = nombre;
+	}
+	
+	
+	public String getNombre() {
+		return this.nombre;
+	}
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 
@@ -47,16 +56,6 @@ public class CorrienteLiteraria {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-
-	public String getNombre() {
-		return nombre;
-	}
-
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 
 
@@ -99,14 +98,5 @@ public class CorrienteLiteraria {
 		this.caracteristicas = caracteristicas;
 	}
 
-
-	@Override
-	public String toString() {
-		return "CorrienteLiteraria [id=" + id + ", nombre=" + nombre + ", perdiodo=" + periodo + ", descripcion="
-				+ descripcion + ", fundamentos=" + fundamentos + ", caracteristicas=" + caracteristicas + "]";
-	}
 	
-	
-	
-
 }

@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-
+import com.libreria.dto.CorrienteResponseDTO;
 import com.libreria.dto.LibroDTO;
 import com.libreria.dto.LibroResponseDTO;
 import com.libreria.exception.*;
@@ -350,41 +350,7 @@ public class LibroService {
         libroRepository.save(libro);
     }
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 
 	public List<LibroResponseDTO> buscarPorMovimiento(Long movimientoId) {
 	    if (!corrienteRepo.existsById(movimientoId)) {
@@ -398,6 +364,34 @@ public class LibroService {
 	    return librosEntidad.stream()
 	            .map(libroMapper::toResponseDTO)
 	            .toList();
+	}
+
+
+	public List<CorrienteResponseDTO> obtenerMovimientos() {
+		
+		/*List<Libro> librosObtenidos = libroRepository.findAll();
+		List<LibroResponseDTO> librosResponseDTO = new ArrayList<>();
+		LibroResponseDTO libroResponse = new LibroResponseDTO();
+		
+		for(Libro l : librosObtenidos) {
+			
+		   System.out.println(l);
+		   libroResponse.setCorrienteNombre(l.getCorriente().getNombre());
+		   librosResponseDTO.add(libroResponse);
+		}*/
+		
+		
+		List<CorrienteLiteraria> corrientesObtenidas = corrienteRepo.findAll();
+		List<CorrienteResponseDTO> corrientesDTO = new ArrayList<>();
+		
+		
+		for(CorrienteLiteraria cl : corrientesObtenidas) {
+			
+			corrientesDTO.add(new CorrienteResponseDTO(cl.getId(),cl.getNombre()));
+			
+		}
+		
+		return corrientesDTO;
 	}
 	
 

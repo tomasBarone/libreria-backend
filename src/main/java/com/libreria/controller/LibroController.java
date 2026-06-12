@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libreria.dto.CorrienteResponseDTO;
 import com.libreria.dto.LibroDTO;
 import com.libreria.exception.GlobalExceptionHandler;
 
@@ -184,6 +185,16 @@ public class LibroController {
 	public ResponseEntity<List<LibroResponseDTO>> listarPorMovimiento(@PathVariable Long movimientoId) {
 	    List<LibroResponseDTO> libros = libroService.buscarPorMovimiento(movimientoId);
 	    return ResponseEntity.ok(libros);
+	}
+	
+	
+	@GetMapping("/movimiento/all")
+	public ResponseEntity<List<CorrienteResponseDTO>> listarMovimientos(){
+		
+		List<CorrienteResponseDTO> libros = libroService.obtenerMovimientos();
+		
+		return ResponseEntity.ok(libros);
+		
 	}
 
 }
