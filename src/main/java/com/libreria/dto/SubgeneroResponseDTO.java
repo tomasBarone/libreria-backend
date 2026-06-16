@@ -2,6 +2,7 @@ package com.libreria.dto;
 
 public class SubgeneroResponseDTO {
 	
+	private Long id;
 	private String nombre;
 	private String descripcion;
 	private String generoNombre;
@@ -11,11 +12,13 @@ public class SubgeneroResponseDTO {
 		
 	}
 	
-	public SubgeneroResponseDTO(String nombre, String descripcion, String generoNombre) {
+	public SubgeneroResponseDTO(Long id,String nombre, String descripcion, String generoNombre) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.generoNombre = generoNombre;
+		this.id = id;
+		
 	}
 
 	
@@ -42,6 +45,14 @@ public class SubgeneroResponseDTO {
 
 	public void setGeneroNombre(String generoNombre) {
 		this.generoNombre = generoNombre;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

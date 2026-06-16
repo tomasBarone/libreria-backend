@@ -16,6 +16,7 @@ public class SubgeneroMapper {
 		subgeneroDTO.setNombre(subgenero.getNombre());
 		subgeneroDTO.setDescripcion(subgenero.getDescripcion());
 		subgeneroDTO.setGeneroNombre(subgenero.getGenero().getNombre());
+		subgeneroDTO.setId(subgenero.getId());
 		
 		return subgeneroDTO;
 		
