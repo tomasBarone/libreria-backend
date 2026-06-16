@@ -11,14 +11,14 @@ import com.libreria.model.CorrienteLiteraria;
 import com.libreria.repository.CorrienteRepository;
 
 @Service
-public class MovimientoService {
+public class CorrienteLiterariaService {
 	
 	CorrienteRepository corrienteRepository;
 	CorrienteLiterariaMapper corrienteMapper;
 	
 	
 
-	public MovimientoService(CorrienteRepository corrienteRepository, CorrienteLiterariaMapper corrienteMapper) {
+	public CorrienteLiterariaService(CorrienteRepository corrienteRepository, CorrienteLiterariaMapper corrienteMapper) {
 		super();
 		this.corrienteRepository = corrienteRepository;
 		this.corrienteMapper = corrienteMapper;

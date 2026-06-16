@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,25 +14,26 @@ import org.springframework.web.bind.annotation.RestController;
 import com.libreria.dto.CorrienteRequestDTO;
 import com.libreria.dto.CorrienteResponseDTO;
 import com.libreria.model.CorrienteLiteraria;
-import com.libreria.service.MovimientoService;
+import com.libreria.service.CorrienteLiterariaService;
 
 @RestController
 @RequestMapping("/api/movimientos")
 public class CorrienteLiterariaController {
 
    
-    private final  MovimientoService movimientoService;
+    private final  CorrienteLiterariaService movimientoService;
     
     
 
  
-    public CorrienteLiterariaController(MovimientoService movimientoService) {
+    public CorrienteLiterariaController(CorrienteLiterariaService movimientoService) {
 		super();
 		this.movimientoService = movimientoService;
 	}
 
 
 	@GetMapping("/all")
+	@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CorrienteResponseDTO>> listarTodos() {
         return ResponseEntity.ok(movimientoService.listarTodos());
     }
