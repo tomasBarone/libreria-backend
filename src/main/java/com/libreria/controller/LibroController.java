@@ -188,13 +188,6 @@ public class LibroController {
 	}
 	
 	
-	@GetMapping("/movimiento/all")
-	public ResponseEntity<List<CorrienteResponseDTO>> listarMovimientos(){
-		
-		List<CorrienteResponseDTO> libros = libroService.obtenerMovimientos();
-		
-		return ResponseEntity.ok(libros);
-		
-	}
+	
 
 }

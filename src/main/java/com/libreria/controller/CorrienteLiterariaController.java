@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libreria.dto.CorrienteRequestDTO;
+import com.libreria.dto.CorrienteResponseDTO;
 import com.libreria.model.CorrienteLiteraria;
 import com.libreria.service.MovimientoService;
 
@@ -29,8 +31,8 @@ public class CorrienteLiterariaController {
 	}
 
 
-	@GetMapping
-    public ResponseEntity<Object> listarTodos() {
+	@GetMapping("/all")
+    public ResponseEntity<List<CorrienteResponseDTO>> listarTodos() {
         return ResponseEntity.ok(movimientoService.listarTodos());
     }
     

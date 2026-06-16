@@ -367,32 +367,7 @@ public class LibroService {
 	}
 
 
-	public List<CorrienteResponseDTO> obtenerMovimientos() {
-		
-		/*List<Libro> librosObtenidos = libroRepository.findAll();
-		List<LibroResponseDTO> librosResponseDTO = new ArrayList<>();
-		LibroResponseDTO libroResponse = new LibroResponseDTO();
-		
-		for(Libro l : librosObtenidos) {
-			
-		   System.out.println(l);
-		   libroResponse.setCorrienteNombre(l.getCorriente().getNombre());
-		   librosResponseDTO.add(libroResponse);
-		}*/
-		
-		
-		List<CorrienteLiteraria> corrientesObtenidas = corrienteRepo.findAll();
-		List<CorrienteResponseDTO> corrientesDTO = new ArrayList<>();
-		
-		
-		for(CorrienteLiteraria cl : corrientesObtenidas) {
-			
-			corrientesDTO.add(new CorrienteResponseDTO(cl.getId(),cl.getNombre()));
-			
-		}
-		
-		return corrientesDTO;
-	}
+	
 	
 
 }
