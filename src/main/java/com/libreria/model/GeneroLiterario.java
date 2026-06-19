@@ -35,6 +35,12 @@ public class GeneroLiterario {
 		this.descripcion = descripcion;
 		
 	}
+	
+	
+	public void addSubgenero(Subgenero subgenero) {
+	    this.subgeneros.add(subgenero);
+	    subgenero.setGenero(this);
+	}
 
 	public Long getId() {
 		return id;

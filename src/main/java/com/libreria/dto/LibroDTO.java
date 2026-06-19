@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class LibroDTO {
 	
@@ -19,22 +20,26 @@ public class LibroDTO {
 	@Min(0)
 	private int ejemplares;
 	
+	@NotNull(message = "La corriente literaria es obligatoria")
 	private Long corrienteId;
 	
+	@NotNull(message = "El subgénero es obligatorio")
 	private Long subgeneroId;
 	
 	private String isbn;
 	
-	@Min(value = 1000, message = "precio invalido")
+	@Min(value = 1000, message = "precio invalido. El minimo es 1000")
 	private BigDecimal precio;
 	
 	private String sinopsis;
+	
+	
+	public LibroDTO() {
+		
+	}
 
-	public LibroDTO(@NotBlank(message = "El titulo es requerido") String titulo,
-			@NotBlank(message = "El autor es requerido") String autor,
-			@Min(value = 1450, message = "Año invalido") int anioPublicacion, @Min(0) int ejemplares,
-			Long corrienteId, Long subgeneroId, String isbn,@Min(value = 1000, message = "precio invalido") BigDecimal precio, String sinopsis) {
-		super();
+	public LibroDTO(String titulo, String autor, int anioPublicacion, int ejemplares,
+			Long corrienteId, Long subgeneroId, String isbn, BigDecimal precio, String sinopsis) {
 		this.titulo = titulo;
 		this.autor = autor;
 		this.anioPublicacion = anioPublicacion;
@@ -44,7 +49,6 @@ public class LibroDTO {
 		this.isbn = isbn;
 		this.precio = precio;
 		this.sinopsis = sinopsis;
-		
 	}
 
 	public String getTitulo() {

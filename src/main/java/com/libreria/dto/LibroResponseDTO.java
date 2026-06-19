@@ -1,17 +1,7 @@
 package com.libreria.dto;
 
-
-
-import com.libreria.model.CorrienteLiteraria;
-import com.libreria.model.Subgenero;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
@@ -19,16 +9,14 @@ public class LibroResponseDTO {
 	
 	private Long id;
 	@Schema(example = "El Aleph")
-	@NotBlank(message = "El titulo no puede estar vacio")
 	private String titulo;
 	
-	@NotBlank(message = "El autor es obligatorio")
+	
 	@Schema(example = "Jorge Luis Borges")
 	private String autor;
 	
 	
 	@Schema(example = "1949")
-	@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta")
 	private int anioPublicacion;
 	
 	private String corrienteNombre; 
@@ -45,25 +33,27 @@ public class LibroResponseDTO {
 	
     
 	
-	public LibroResponseDTO(@NotBlank(message = "El titulo no puede estar vacio") String titulo,
-			@NotBlank(message = "El autor es obligatorio") String autor) {
-		super();
-		this.titulo = titulo;
-		this.autor = autor;
-	}
+		public LibroResponseDTO(String titulo, String autor) {
+			this.titulo = titulo;
+			this.autor = autor;
+		}
 
 
 
-	public LibroResponseDTO(Long id, String titulo, String autor, int anioPublicacion, String corrienteNombre, String subgeneroNombre, String generoNombre) {
-                     this.id = id;
-                     this.titulo = titulo;
-                     this.autor = autor;
-                     this.anioPublicacion = anioPublicacion;
-                     this.corrienteNombre = corrienteNombre;
-                     this.subgeneroNombre = subgeneroNombre;
-                     this.generoNombre = generoNombre;
-}
-
+ 
+		public LibroResponseDTO(Long id, String titulo, String autor, int anioPublicacion, 
+                String corrienteNombre, String subgeneroNombre, String generoNombre) {
+			this.id = id;
+			this.titulo = titulo;
+			this.autor = autor;
+			this.anioPublicacion = anioPublicacion;
+			this.corrienteNombre = corrienteNombre;
+			this.subgeneroNombre = subgeneroNombre;
+			this.generoNombre = generoNombre;
+		}
+		
+		
+		
 	public String getTitulo() {
 		return titulo;
 	}
