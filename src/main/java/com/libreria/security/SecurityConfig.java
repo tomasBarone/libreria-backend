@@ -38,6 +38,10 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
+                    
+                    // === NUEVA REGLA: Permitimos el acceso público a la carpeta externa de imágenes ===
+                    .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
+                    
                     .anyRequest().authenticated() 
                 )
                 .httpBasic(h -> h.disable()) 

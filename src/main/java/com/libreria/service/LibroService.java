@@ -1,9 +1,15 @@
 package com.libreria.service;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -12,6 +18,8 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.libreria.model.CorrienteLiteraria;
 import com.libreria.model.Libro;
@@ -97,6 +105,54 @@ public class LibroService {
 	}
 	
 	
+	public LibroResponseDTO guardarLibroConImagen(LibroDTO dto, MultipartFile imagen) {
+	    // A. Reutilizamos la lógica del Mapper y las relaciones transformando a entidad
+	    Libro libro = libroMapper.toEntity(dto);
+	    
+	    CorrienteLiteraria corriente = corrienteRepo.findById(dto.getCorrienteId())
+	        .orElseThrow(() -> new EntityNotFoundException("Corriente no encontrada"));
+	    Subgenero subgenero = subgeneroRepo.findById(dto.getSubgeneroId())
+	        .orElseThrow(() -> new EntityNotFoundException("Subgenero no encontrado"));
+
+	    libro.setCorriente(corriente);
+	    libro.setSubgenero(subgenero);
+
+	    // B. Procesamos el archivo físico e inyectamos el nombre en la entidad
+	    if (imagen != null && !imagen.isEmpty()) {
+	        try {
+	            Path rutaDirectorio = Paths.get("uploads");
+	            if (!Files.exists(rutaDirectorio)) {
+	                Files.createDirectories(rutaDirectorio);
+	            }
+
+	            String nombreUnicoArchivo = UUID.randomUUID().toString() + "_" + imagen.getOriginalFilename();
+	            Path rutaCompletaArchivo = rutaDirectorio.resolve(nombreUnicoArchivo);
+	            Files.copy(imagen.getInputStream(), rutaCompletaArchivo, StandardCopyOption.REPLACE_EXISTING);
+
+	            libro.setImagenNombre(nombreUnicoArchivo);
+	        } catch (IOException e) {
+	            throw new RuntimeException("Error al guardar el archivo de la portada", e);
+	        }
+	    }
+
+	    // C. Guardamos la entidad en la base de datos
+	    Libro libroGuardado = libroRepository.save(libro);
+	    
+	    // D. Mapeamos la respuesta y le cocinamos la URL web final
+	    LibroResponseDTO responseDTO = libroMapper.toResponseDTO(libroGuardado);
+	    
+	    if (libroGuardado.getImagenNombre() != null) {
+	        String urlCompleta = ServletUriComponentsBuilder.fromCurrentContextPath()
+	                .path("/uploads/")
+	                .path(libroGuardado.getImagenNombre())
+	                .toUriString();
+	        responseDTO.setImagenUrl(urlCompleta); // Para que React dibuje la tapa 3D
+	    }
+	    
+	    return responseDTO;
+	}
+	
+	
 	// Listar todos
 	public Page<LibroResponseDTO> obtenerTodos(Pageable pageable){
 		
@@ -158,6 +214,11 @@ public class LibroService {
 		libroResponse.setCorrienteNombre(libro.getCorriente().getNombre());
 		libroResponse.setGeneroNombre(libro.getSubgenero().getGenero().getNombre());
 		libroResponse.setSubgeneroNombre(libro.getSubgenero().getNombre());
+		libroResponse.setIsbn(libro.getIsbn());
+		libroResponse.setPrecio(libro.getPrecio());
+		libroResponse.setSinopsis(libro.getSinopsis());
+		
+		System.out.println("Precio: "+libroResponse);
 		
 		
 		return libroResponse;

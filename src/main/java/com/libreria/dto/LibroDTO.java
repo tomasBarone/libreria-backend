@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class LibroDTO {
 	
@@ -17,7 +18,8 @@ public class LibroDTO {
 	@Min(value = 1450, message = "Año invalido")
 	private int anioPublicacion;
 	
-	@Min(0)
+	@NotNull(message = "La cantidad de ejemplares es obligatoria")
+    @Positive(message = "Debe haber al menos 1 ejemplar")
 	private int ejemplares;
 	
 	@NotNull(message = "La corriente literaria es obligatoria")
@@ -26,12 +28,14 @@ public class LibroDTO {
 	@NotNull(message = "El subgénero es obligatorio")
 	private Long subgeneroId;
 	
+	@NotBlank(message = "El ISBN es obligatorio")
 	private String isbn;
 	
 	@Min(value = 1000, message = "precio invalido. El minimo es 1000")
 	private BigDecimal precio;
 	
 	private String sinopsis;
+	
 	
 	
 	public LibroDTO() {

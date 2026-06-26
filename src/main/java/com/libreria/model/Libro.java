@@ -42,6 +42,10 @@ public class Libro  extends BaseEntity{
 	private int ejemplares;
 	
 	
+	@Column(name = "imagen_nombre", length = 255)
+    private String imagenNombre;
+	
+	
 	
 	@Min(value = 1450, message = "El año debe ser posterior a la invencion de la imprenta")
 	@Column(name = "ANIO_PUBLICACION")
@@ -64,6 +68,8 @@ public class Libro  extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name = "subgenero_id")
 	private Subgenero subgenero;
+	
+	
 	
 	
 	
@@ -170,6 +176,17 @@ public class Libro  extends BaseEntity{
 
 	public void setSinopsis(String sinopsis) {
 		this.sinopsis = sinopsis;
+	}
+	
+	
+	
+
+	public String getImagenNombre() {
+		return imagenNombre;
+	}
+
+	public void setImagenNombre(String imagenNombre) {
+		this.imagenNombre = imagenNombre;
 	}
 
 	@Override

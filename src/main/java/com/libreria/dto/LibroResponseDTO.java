@@ -1,5 +1,7 @@
 package com.libreria.dto;
 
+import java.math.BigDecimal;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import jakarta.validation.constraints.Min;
@@ -15,6 +17,8 @@ public class LibroResponseDTO {
 	@Schema(example = "Jorge Luis Borges")
 	private String autor;
 	
+	private String isbn;
+	
 	
 	@Schema(example = "1949")
 	private int anioPublicacion;
@@ -24,6 +28,12 @@ public class LibroResponseDTO {
     private String subgeneroNombre;
     
     private String generoNombre; 
+    
+    private BigDecimal precio;
+    
+    private String sinopsis;
+    
+    private String imagenUrl;
 
 	
 	
@@ -42,7 +52,7 @@ public class LibroResponseDTO {
 
  
 		public LibroResponseDTO(Long id, String titulo, String autor, int anioPublicacion, 
-                String corrienteNombre, String subgeneroNombre, String generoNombre) {
+                String corrienteNombre, String subgeneroNombre, String generoNombre, BigDecimal precio, String isbn, String sinopsis, String imagenUrl) {
 			this.id = id;
 			this.titulo = titulo;
 			this.autor = autor;
@@ -50,6 +60,10 @@ public class LibroResponseDTO {
 			this.corrienteNombre = corrienteNombre;
 			this.subgeneroNombre = subgeneroNombre;
 			this.generoNombre = generoNombre;
+			this.precio = precio;
+			this.isbn = isbn;
+			this.sinopsis = sinopsis;
+			this.imagenUrl = imagenUrl;
 		}
 		
 		
@@ -132,6 +146,56 @@ public class LibroResponseDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
+
+	public BigDecimal getPrecio() {
+		return precio;
+	}
+
+
+
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
+	}
+
+
+
+	public String getIsbn() {
+		return isbn;
+	}
+
+
+
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+
+
+
+	public String getSinopsis() {
+		return sinopsis;
+	}
+
+
+
+	public void setSinopsis(String sinopsis) {
+		this.sinopsis = sinopsis;
+	}
+
+
+
+	public String getImagenUrl() {
+		return imagenUrl;
+	}
+
+
+
+	public void setImagenUrl(String imagenUrl) {
+		this.imagenUrl = imagenUrl;
+	}
+	
+	
 	
 	
 	

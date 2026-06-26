@@ -1,10 +1,13 @@
 package com.libreria.dto;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
 
 public class CorrienteRequestDTO {
 	
+	@NotBlank(message = "El nombre es requerido")
 	private String nombre;
+	@NotBlank(message = "El periodo es requerido")
 	private String periodo;
 	@Column(length = 1000)
 	private String descripcion;
