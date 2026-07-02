@@ -94,7 +94,6 @@ public class LibroController {
 	
 	//GET: Obtener todos
 	@GetMapping("/all")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Page<LibroResponseDTO>> listarLibros(@ParameterObject @PageableDefault(page = 0, size = 10, sort = "titulo")Pageable pageable){
 		
 		return ResponseEntity.ok(libroService.obtenerTodos(pageable));

@@ -40,4 +40,30 @@ public class CorrienteLiterariaService {
 		return null;
 	}
 
+
+	public CorrienteResponseDTO actualizar(Long id, CorrienteRequestDTO corrienteRequest) {
+		
+		CorrienteLiteraria corriente = corrienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Corriente no encontrada"));
+		CorrienteResponseDTO corrienteResponse = new CorrienteResponseDTO();
+		
+		corriente.setNombre(corrienteRequest.getNombre());
+		corriente.setCaracteristicas(corrienteRequest.getCaracteristicas());
+		corriente.setDescripcion(corrienteRequest.getDescripcion());
+		corriente.setFundamentos(corrienteRequest.getFundamentos());
+		corriente.setPeriodo(corrienteRequest.getPeriodo());
+		
+		corrienteRepository.save(corriente);
+		
+		corrienteResponse.setNombre(corrienteRequest.getNombre());
+		corrienteResponse.setCaracteristicas(corrienteRequest.getCaracteristicas());
+		corrienteResponse.setDescripcion(corrienteRequest.getDescripcion());
+		corrienteResponse.setFundamentos(corrienteRequest.getFundamentos());
+		corrienteResponse.setPeriodo(corrienteRequest.getPeriodo());
+		
+		return corrienteResponse;
+		
+		
+
+	}
+
 }

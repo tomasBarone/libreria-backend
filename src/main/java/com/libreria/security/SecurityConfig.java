@@ -29,24 +29,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                 // 1. Vincula el método corsConfigurationSource() definido abajo
-                .cors(Customizer.withDefaults()) 
-                .csrf(csrf -> csrf.disable()) 
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
-                .authorizeHttpRequests(auth -> auth
-                     // 2. Deja pasar libremente las validaciones de red nativas del navegador
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                    .requestMatchers("/api/auth/**").permitAll()
-                    
-                    // === NUEVA REGLA: Permitimos el acceso público a la carpeta externa de imágenes ===
-                    .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
-                    
-                    .anyRequest().authenticated() 
-                )
-                .httpBasic(h -> h.disable()) 
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                // 1. Vincula el método corsConfigurationSource() definido abajo
+               .cors(Customizer.withDefaults()) 
+               .csrf(csrf -> csrf.disable()) 
+               .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
+               .authorizeHttpRequests(auth -> auth
+                    // 2. Deja pasar libremente las validaciones de red nativas del navegador
+                   .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                   .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                   .requestMatchers("/api/auth/**").permitAll()
+                   
+                   // === NUEVA REGLA: Recursos públicos informativos (Menú y Catálogo) ===
+                   .requestMatchers(HttpMethod.GET, "/api/movimientos/all").permitAll()
+                   .requestMatchers(HttpMethod.GET, "/api/libros/**").permitAll() // Si querés que el catálogo sea visible sin loguearse
+                   .requestMatchers(HttpMethod.GET, "/api/corrientes/**").permitAll() // Si tenés endpoints de corrientes accesibles
+                   
+                   // === NUEVA REGLA: Permitimos el acceso público a la carpeta externa de imágenes ===
+                   .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
+                   
+                   // El resto de los métodos (POST, PUT, DELETE en libros/corrientes o endpoints de administración) requerirán login
+                   .anyRequest().authenticated() 
+               )
+               .httpBasic(h -> h.disable()) 
+               .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+               .build();
     }
 
     // Definimos el origen seguro de datos acá adentro para que la cadena de filtros lo tome al 100%

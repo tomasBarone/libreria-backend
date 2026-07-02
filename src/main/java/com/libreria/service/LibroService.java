@@ -106,7 +106,8 @@ public class LibroService {
 	
 	
 	public LibroResponseDTO guardarLibroConImagen(LibroDTO dto, MultipartFile imagen) {
-	    // A. Reutilizamos la lógica del Mapper y las relaciones transformando a entidad
+	  
+		// A. Reutilizamos la lógica del Mapper y las relaciones transformando a entidad
 	    Libro libro = libroMapper.toEntity(dto);
 	    
 	    CorrienteLiteraria corriente = corrienteRepo.findById(dto.getCorrienteId())

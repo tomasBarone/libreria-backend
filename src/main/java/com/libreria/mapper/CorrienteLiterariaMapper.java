@@ -22,6 +22,10 @@ public class CorrienteLiterariaMapper {
         // 2. Extraemos los datos de la entidad y se los seteamos al DTO
         dto.setId(corriente.getId());
         dto.setNombre(corriente.getNombre());
+        dto.setPeriodo(corriente.getPeriodo());
+        dto.setDescripcion(corriente.getDescripcion());
+        dto.setCaracteristicas(corriente.getCaracteristicas());
+        dto.setFundamentos(corriente.getFundamentos());
 
         // 3. Retornamos el objeto transformado
         return dto;

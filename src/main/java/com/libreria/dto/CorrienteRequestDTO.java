@@ -10,8 +10,11 @@ public class CorrienteRequestDTO {
 	@NotBlank(message = "El periodo es requerido")
 	private String periodo;
 	@Column(length = 1000)
+	@NotBlank(message = "La descripcion es requerida")
 	private String descripcion;
+	@NotBlank(message = "Los fundamentos son requeridos")
 	private String fundamentos;
+	@NotBlank(message = "Las caracteristicas son requeridas")
 	private String caracteristicas;
 	
 	public CorrienteRequestDTO() {
