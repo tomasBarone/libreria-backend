@@ -82,6 +82,13 @@ public class LibroAnalisis {
 	public void setEjePsicologico(String ejePsicologico) {
 		this.ejePsicologico = ejePsicologico;
 	}
+
+	@Override
+	public String toString() {
+		return "LibroAnalisis [id=" + id + ", libro=" + libro + ", introduccionTeorica=" + introduccionTeorica
+				+ ", mapaSensaciones=" + mapaSensaciones + ", sustratoFilosofico=" + sustratoFilosofico
+				+ ", ejePsicologico=" + ejePsicologico + "]";
+	}
 	
 	
 }

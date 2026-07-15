@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,5 +52,17 @@ public class LibroAnalisisController {
     	return ResponseEntity.ok(analisisResponse);
     }
 	
+    
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<LibroAnalisisResponseDTO> actualizarInformacion(@Valid @RequestBody LibroAnalisisRequestDTO analisis, @PathVariable Long id){
+    	
+    	
+    	
+    	LibroAnalisisResponseDTO analisisActualizado = libroAnalisisService.actualizar(analisis, id);
+    	
+    	return ResponseEntity.ok(analisisActualizado);
+    	
+    	
+    }
 	
 }

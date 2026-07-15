@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.libreria.dto.LibroAnalisisRequestDTO;
 import com.libreria.dto.LibroAnalisisResponseDTO;
+import com.libreria.mapper.AnalisisMapper;
 import com.libreria.model.Libro;
 import com.libreria.model.LibroAnalisis;
 import com.libreria.repository.LibroAnalisisRepository;
@@ -14,15 +15,16 @@ import jakarta.validation.Valid;
 @Service
 public class LibroAnalisisService {
 	
-	final LibroAnalisisRepository libroAnalisisRepo;
-	final LibroRepository libroRepo;
-	
+	private final LibroAnalisisRepository libroAnalisisRepo;
+	private final LibroRepository libroRepo;
+	private final AnalisisMapper analisisMapper;
 	
 
-	public LibroAnalisisService(LibroAnalisisRepository libroAnalisisRepo,LibroRepository libroRepo) {
+	public LibroAnalisisService(LibroAnalisisRepository libroAnalisisRepo,LibroRepository libroRepo, AnalisisMapper analisisMapper) {
 		super();
 		this.libroAnalisisRepo = libroAnalisisRepo;
 		this.libroRepo = libroRepo;
+		this.analisisMapper = analisisMapper;
 	}
 
 
@@ -72,6 +74,31 @@ public class LibroAnalisisService {
 	
 		
 		return analisisResponseDTO;
+	}
+
+
+
+	public LibroAnalisisResponseDTO actualizar(LibroAnalisisRequestDTO analisis, Long id) {
+		
+	
+	    LibroAnalisis analisisEntity = libroAnalisisRepo.findById(id)
+	            .orElseThrow(() -> new RuntimeException("El análisis para el libro " + id + " no existe."));
+
+	   
+	    analisisEntity.setEjePsicologico(analisis.getEjePsicologico());
+	    analisisEntity.setIntroduccionTeorica(analisis.getIntroduccionTeorica());
+	    analisisEntity.setMapaSensaciones(analisis.getMapaSensaciones());
+	    analisisEntity.setSustratoFilosofico(analisis.getSustratoFilosofico());
+
+	   
+	    libroAnalisisRepo.save(analisisEntity);
+
+	
+	    return analisisMapper.toResponseDTO(analisisEntity);
+		
+		
+		
+		
 	}
 
 }

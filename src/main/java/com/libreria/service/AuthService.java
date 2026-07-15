@@ -43,10 +43,9 @@ public class AuthService {
     private RoleRepository roleRepository;
 
     
-    
     public AuthResponseDTO authenticateUser(LoginRequest loginRequest) {
         
-    	// 1. Autenticar las credenciales
+        // 1. Autenticar las credenciales
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(), 
@@ -54,17 +53,17 @@ public class AuthService {
             )
         );
 
-        // 2. Generar el token
-        String token = jwtUtils.generateToken(authentication.getName());
-
-     // Extraemos los roles de la autenticación
+        // 2. Extraemos los roles primero
         Set<String> roles = authentication.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toSet());
 
+        // 3. Generar el token pasándole el username Y los roles
+        String token = jwtUtils.generateToken(authentication.getName(), roles);
+
+        // 4. Devolver la respuesta completa
         return new AuthResponseDTO(token, authentication.getName(), roles);
     }
-    
     
     public UserResponseDTO registerUser(UserRegistrationDTO registrationDTO) {
         
