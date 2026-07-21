@@ -39,7 +39,7 @@ import com.libreria.dto.LibroResponseDTO;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/api/libros")
@@ -50,12 +50,6 @@ public class LibroController {
 	private final LibroService libroService;
 	
 	
-
-	@GetMapping	
-	public String HomePage() {
-		System.out.println("data");
-		return "welcome";
-	}
 
 	public LibroController(LibroService libroService) {
 		super();
