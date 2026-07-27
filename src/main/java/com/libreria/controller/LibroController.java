@@ -64,11 +64,7 @@ public class LibroController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<LibroResponseDTO> crearLibro(@Valid @RequestBody LibroDTO libroDTO){
 		
-		if(libroDTO.getIsbn().length() > 13) {
-			
-			throw new RuntimeException("ISBN invalido");
-			
-		}
+		
 		
 		LibroResponseDTO nuevoLibro = libroService.guardarLibro(libroDTO);
 		return new ResponseEntity<>(nuevoLibro, HttpStatus.CREATED);
@@ -78,6 +74,7 @@ public class LibroController {
 	
 	// Endpoint especial (Para crear incluyendo el archivo binario)
 	@PostMapping(value = "/con-foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<LibroResponseDTO> crearLibroConFoto(
 	        @RequestPart("libro") LibroDTO dto,
 	        @RequestPart("imagen") MultipartFile imagen) {
@@ -130,13 +127,11 @@ public class LibroController {
 	
 	//Actualizar libro
 	@PutMapping("/actualizar/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<LibroResponseDTO> updateBook (@PathVariable Long id, @Valid @RequestBody LibroDTO nuevoLibro){
 		
 		
-		
-		System.out.println("hola");
-		
-		
+	
 		LibroResponseDTO libro = libroService.actualizar(id, nuevoLibro);
 		
 		

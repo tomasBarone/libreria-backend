@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,9 +31,11 @@ public class OrdenController {
 	 * Recibe una lista de libros y cantidades (DTOs) desde el cliente.
 	 */
 	@PostMapping
-	public ResponseEntity<Orden> crearOrden(@RequestBody List<DetalleOrdenRequest> items){
+	public ResponseEntity<Orden> crearOrden(@RequestBody List<DetalleOrdenRequest> items, @RequestHeader(value = "X-User-Email", defaultValue = "tu.email.real@gmail.com") String email){
 		// Delega la lógica de negocio al servicio y retorna la orden creada
-		Orden nuevaOrden = ordenService.crearOrden(items);
+		
+		System.out.println(email);
+		Orden nuevaOrden = ordenService.crearOrden(items, email);
         return ResponseEntity.ok(nuevaOrden);
 		
 	}

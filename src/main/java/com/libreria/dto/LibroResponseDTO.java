@@ -34,6 +34,8 @@ public class LibroResponseDTO {
     private String sinopsis;
     
     private String imagenUrl;
+    
+    private int ejemplares;
 
 	
 	
@@ -52,7 +54,7 @@ public class LibroResponseDTO {
 
  
 		public LibroResponseDTO(Long id, String titulo, String autor, int anioPublicacion, 
-                String corrienteNombre, String subgeneroNombre, String generoNombre, BigDecimal precio, String isbn, String sinopsis, String imagenUrl) {
+                String corrienteNombre, String subgeneroNombre, String generoNombre, BigDecimal precio, String isbn, String sinopsis, String imagenUrl,int ejemplares) {
 			this.id = id;
 			this.titulo = titulo;
 			this.autor = autor;
@@ -64,6 +66,7 @@ public class LibroResponseDTO {
 			this.isbn = isbn;
 			this.sinopsis = sinopsis;
 			this.imagenUrl = imagenUrl;
+			this.ejemplares = ejemplares;
 		}
 		
 		
@@ -193,6 +196,18 @@ public class LibroResponseDTO {
 
 	public void setImagenUrl(String imagenUrl) {
 		this.imagenUrl = imagenUrl;
+	}
+
+
+
+	public int getEjemplares() {
+		return ejemplares;
+	}
+
+
+
+	public void setEjemplares(int ejemplares) {
+		this.ejemplares = ejemplares;
 	}
 	
 	

@@ -12,6 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -26,11 +28,20 @@ public class UserEntity {
  private Long id;
  
  @Column(unique = true, nullable = false)
+ @NotBlank(message = "El nombre de usuario es obligatorio")
  private String username;
  
  @Column(nullable = false)
+ @NotBlank(message = "La contraseña es obligatoria")
  private String password;
  
+ @Column(unique = true, nullable = false)
+ @NotBlank(message = "El email es obligatorio")
+ @Pattern(
+     regexp = "^[A-Za-z0-9._%+-]+@(gmail\\.com|hotmail\\.com|outlook\\.com|yahoo\\.com|live\\.com)$",
+     message = "Debe ingresar un email válido con un dominio permitido (gmail, hotmail, outlook, yahoo)"
+ )
+ private String email;
  
  //usamos Set para los roles
  /*@ElementCollection(fetch = FetchType.EAGER)
@@ -84,6 +95,13 @@ public class UserEntity {
 	}
 	
 	
+	public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 	
  
  

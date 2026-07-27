@@ -218,7 +218,8 @@ public class LibroService {
 		libroResponse.setIsbn(libro.getIsbn());
 		libroResponse.setPrecio(libro.getPrecio());
 		libroResponse.setSinopsis(libro.getSinopsis());
-		
+		libroResponse.setImagenUrl(libro.getImagenNombre());	
+		libroResponse.setEjemplares(libro.getEjemplares());
 		System.out.println("Precio: "+libroResponse);
 		
 		
