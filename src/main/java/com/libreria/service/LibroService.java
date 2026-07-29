@@ -248,6 +248,11 @@ public class LibroService {
 			 lib.setCorrienteNombre(LibrosEncontrados.get(i).getCorriente().getNombre());
 			 lib.setSubgeneroNombre(LibrosEncontrados.get(i).getSubgenero().getNombre());
 			 lib.setGeneroNombre(LibrosEncontrados.get(i).getSubgenero().getGenero().getNombre());
+			 lib.setId(LibrosEncontrados.get(i).getId());
+		  	 lib.setImagenUrl(LibrosEncontrados.get(i).getImagenNombre());
+		  	 lib.setIsbn(LibrosEncontrados.get(i).getIsbn());
+		  	 lib.setSinopsis(LibrosEncontrados.get(i).getSinopsis());
+		  	 lib.setPrecio(LibrosEncontrados.get(i).getPrecio());
 			 libroResponse.add(lib);
 			 
 		 }
@@ -272,6 +277,11 @@ public class LibroService {
 			lib.setCorrienteNombre(libro.get(i).getCorriente().getNombre());
 		    lib.setSubgeneroNombre(libro.get(i).getSubgenero().getNombre());
 	  	    lib.setGeneroNombre(libro.get(i).getSubgenero().getGenero().getNombre());
+	  	    lib.setId(libro.get(i).getId());
+	  	    lib.setImagenUrl(libro.get(i).getImagenNombre());
+	  	    lib.setIsbn(libro.get(i).getIsbn());
+	  	    lib.setSinopsis(libro.get(i).getSinopsis());
+	  	    lib.setPrecio(libro.get(i).getPrecio());
 			libroResponse.add(lib);
 			
 			
@@ -302,6 +312,11 @@ public class LibroService {
 			lib.setCorrienteNombre(libros.get(i).getCorriente().getNombre());
 			lib.setSubgeneroNombre(libros.get(i).getSubgenero().getNombre());
 			lib.setGeneroNombre(libros.get(i).getSubgenero().getGenero().getNombre());
+			lib.setId(libros.get(i).getId());
+	  	    lib.setImagenUrl(libros.get(i).getImagenNombre());
+	  	    lib.setIsbn(libros.get(i).getIsbn());
+	  	    lib.setSinopsis(libros.get(i).getSinopsis());
+	  	    lib.setPrecio(libros.get(i).getPrecio());
 			libroResponse.add(lib);
 			
 			

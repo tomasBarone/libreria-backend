@@ -58,7 +58,6 @@ public class LibroController {
 	}
 	
 	
-	
      //POST: Crear un Libro
 	@PostMapping("/crear")
 	@PreAuthorize("hasRole('ADMIN')")
