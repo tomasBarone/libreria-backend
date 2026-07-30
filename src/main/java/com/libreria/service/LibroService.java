@@ -228,6 +228,13 @@ public class LibroService {
 	
 	
 	
+	public List<LibroResponseDTO> buscarGlobal(String query) {
+	    // Le pide al repositorio los libros cuyo título O nombre de autor coincida con la consulta
+	    List<Libro> libros = libroRepository.buscarPorTituloOAutor(query);
+	    
+	    // Mapea las entidades a DTOs de respuesta
+	    return libros.stream().map(libroMapper::toResponseDTO).toList();
+	}
 	
 	
 	

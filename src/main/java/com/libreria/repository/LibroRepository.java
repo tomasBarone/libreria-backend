@@ -26,4 +26,9 @@ public interface LibroRepository extends JpaRepository<Libro, Long>{
 		Page<Libro> filtrarLibrosPro( @Param("inicio") Integer inicio, @Param("fin") Integer fin, Pageable pageable);
 	
 	List<Libro> findByCorrienteId(Long movimientoId);
+	
+	// Compara la query contra el TÍTULO O contra el NOMBRE DEL AUTOR en una sola consulta a la BD
+    @Query("SELECT l FROM Libro l WHERE LOWER(l.titulo) LIKE LOWER(CONCAT('%', :query, '%')) " +
+           "OR LOWER(l.autor) LIKE LOWER(CONCAT('%', :query, '%'))")
+    List<Libro> buscarPorTituloOAutor(@Param("query") String query);
 }

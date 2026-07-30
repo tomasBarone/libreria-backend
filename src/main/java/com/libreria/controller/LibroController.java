@@ -105,23 +105,30 @@ public class LibroController {
 	
 	//Buscar libro por autor o titulo o año de publicacion
 	@GetMapping("/buscar")
-	public ResponseEntity<List<LibroResponseDTO>> buscar(@RequestParam(required = false) String autor, @RequestParam(required = false) String titulo, @RequestParam(required = false) Integer anioPublicacion) {
-	    
-		
-		
+	public ResponseEntity<List<LibroResponseDTO>> buscar(
+			@RequestParam(required = false) String query, //  Parámetro unificado para la barra de búsqueda
+	        @RequestParam(required = false) String autor,
+	        @RequestParam(required = false) String titulo,
+	        @RequestParam(required = false) Integer anioPublicacion) {
+
+	    // 1. Si viene una búsqueda general desde el SearchOverlay (título o autor)
+	    if (query != null && !query.isBlank()) {
+	        return ResponseEntity.ok(libroService.buscarGlobal(query));
+	    }
+
+	    // 2. Filtros específicos por parámetro (para búsquedas avanzadas si hiciera falta)
 	    if (autor != null) {
 	        return ResponseEntity.ok(libroService.obtenerPorAutor(autor));
 	    } 
 	    if (titulo != null) {
 	        return ResponseEntity.ok(libroService.buscarLibrosPorTitulo(titulo));
 	    }
-	    if(anioPublicacion != null) {
-	    	return ResponseEntity.ok(libroService.buscarPorAnio(anioPublicacion));
+	    if (anioPublicacion != null) {
+	        return ResponseEntity.ok(libroService.buscarPorAnio(anioPublicacion));
 	    }
-	    
-	    return ResponseEntity.notFound().build();
+
+	    return ResponseEntity.ok(List.of()); // Retorna lista vacía en lugar de 404 para no romper el front
 	}
-	
 	
 	
 	//Actualizar libro
