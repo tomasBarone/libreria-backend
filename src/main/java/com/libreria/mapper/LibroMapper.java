@@ -10,7 +10,6 @@ import com.libreria.dto.LibroDTO;
 import com.libreria.dto.LibroResponseDTO;
 import com.libreria.model.Libro;
 
-
 @Mapper(componentModel = "spring")
 public abstract class LibroMapper {
 
@@ -26,16 +25,31 @@ public abstract class LibroMapper {
 
     public abstract void updateEntityFromDto(LibroDTO dto, @MappingTarget Libro entity);
 
-   
     @AfterMapping
     protected void UrlImagen(Libro libro, @MappingTarget LibroResponseDTO targetDTO) {
-        if (libro.getImagenNombre() != null) {
-            String urlCompleta = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/uploads/")
-                    .path(libro.getImagenNombre())
-                    .toUriString();
+        String nombreOUrl = libro.getImagenNombre();
+        
+        if (nombreOUrl != null && !nombreOUrl.isBlank()) {
             
-            targetDTO.setImagenUrl(urlCompleta);
+            // 1. Si es una URL de Cloudinary o HTTP(S) externa
+            if (nombreOUrl.contains("cloudinary.com") || nombreOUrl.startsWith("http://") || nombreOUrl.startsWith("https://") || nombreOUrl.startsWith("https:/")) {
+                
+                // Sanitizamos si en la base quedó guardada con una sola barra ("https:/")
+                if (nombreOUrl.startsWith("https:/") && !nombreOUrl.startsWith("https://")) {
+                    nombreOUrl = nombreOUrl.replace("https:/", "https://");
+                }
+                
+                targetDTO.setImagenUrl(nombreOUrl);
+                
+            } else {
+                // 2. Si es un archivo local guardado en la carpeta /uploads del servidor
+                String urlCompleta = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/uploads/")
+                        .path(nombreOUrl)
+                        .toUriString();
+                
+                targetDTO.setImagenUrl(urlCompleta);
+            }
         }
     }
 }

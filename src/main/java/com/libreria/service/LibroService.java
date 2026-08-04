@@ -47,18 +47,20 @@ public class LibroService {
 	private final LibroRepository libroRepository;
     private final CorrienteRepository corrienteRepo;
     private final SubgeneroRepository subgeneroRepo;
+    private final CloudinaryService cloudinaryService;
 
 	
 	private final LibroMapper libroMapper;
 	
 	
 	public LibroService(LibroRepository libroRepository, CorrienteRepository corrienteRepo,
-			SubgeneroRepository subgeneroRepo, LibroMapper libroMapper) {
+			SubgeneroRepository subgeneroRepo, LibroMapper libroMapper, CloudinaryService cloudinaryService) {
 		super();
 		this.libroRepository = libroRepository;
 		this.corrienteRepo = corrienteRepo;
 		this.subgeneroRepo = subgeneroRepo;
 		this.libroMapper = libroMapper;
+		this.cloudinaryService = cloudinaryService;
 	}
 
 
@@ -121,16 +123,9 @@ public class LibroService {
 	    // B. Procesamos el archivo físico e inyectamos el nombre en la entidad
 	    if (imagen != null && !imagen.isEmpty()) {
 	        try {
-	            Path rutaDirectorio = Paths.get("uploads");
-	            if (!Files.exists(rutaDirectorio)) {
-	                Files.createDirectories(rutaDirectorio);
-	            }
-
-	            String nombreUnicoArchivo = UUID.randomUUID().toString() + "_" + imagen.getOriginalFilename();
-	            Path rutaCompletaArchivo = rutaDirectorio.resolve(nombreUnicoArchivo);
-	            Files.copy(imagen.getInputStream(), rutaCompletaArchivo, StandardCopyOption.REPLACE_EXISTING);
-
-	            libro.setImagenNombre(nombreUnicoArchivo);
+	         
+	        	String urlPublicaCloudinary = cloudinaryService.subirImagen(imagen);
+	            libro.setImagenNombre(urlPublicaCloudinary);
 	        } catch (IOException e) {
 	            throw new RuntimeException("Error al guardar el archivo de la portada", e);
 	        }
@@ -143,11 +138,8 @@ public class LibroService {
 	    LibroResponseDTO responseDTO = libroMapper.toResponseDTO(libroGuardado);
 	    
 	    if (libroGuardado.getImagenNombre() != null) {
-	        String urlCompleta = ServletUriComponentsBuilder.fromCurrentContextPath()
-	                .path("/uploads/")
-	                .path(libroGuardado.getImagenNombre())
-	                .toUriString();
-	        responseDTO.setImagenUrl(urlCompleta); // Para que React dibuje la tapa 3D
+	       
+	        responseDTO.setImagenUrl(libroGuardado.getImagenNombre()); // Para que React dibuje la tapa 3D
 	    }
 	    
 	    return responseDTO;
