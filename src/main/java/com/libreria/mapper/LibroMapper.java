@@ -27,29 +27,15 @@ public abstract class LibroMapper {
 
     @AfterMapping
     protected void UrlImagen(Libro libro, @MappingTarget LibroResponseDTO targetDTO) {
-        String nombreOUrl = libro.getImagenNombre();
-        
-        if (nombreOUrl != null && !nombreOUrl.isBlank()) {
+        if (libro.getImagenNombre() != null && !libro.getImagenNombre().isBlank()) {
+            String url = libro.getImagenNombre();
             
-            // 1. Si es una URL de Cloudinary o HTTP(S) externa
-            if (nombreOUrl.contains("cloudinary.com") || nombreOUrl.startsWith("http://") || nombreOUrl.startsWith("https://") || nombreOUrl.startsWith("https:/")) {
-                
-                // Sanitizamos si en la base quedó guardada con una sola barra ("https:/")
-                if (nombreOUrl.startsWith("https:/") && !nombreOUrl.startsWith("https://")) {
-                    nombreOUrl = nombreOUrl.replace("https:/", "https://");
-                }
-                
-                targetDTO.setImagenUrl(nombreOUrl);
-                
-            } else {
-                // 2. Si es un archivo local guardado en la carpeta /uploads del servidor
-                String urlCompleta = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/uploads/")
-                        .path(nombreOUrl)
-                        .toUriString();
-                
-                targetDTO.setImagenUrl(urlCompleta);
+            // Corregimos por si alguna URL vieja en la base de datos quedó con https:/ sin doble barra
+            if (url.startsWith("https:/") && !url.startsWith("https://")) {
+                url = url.replace("https:/", "https://");
             }
+            
+            targetDTO.setImagenUrl(url);
         }
     }
 }
