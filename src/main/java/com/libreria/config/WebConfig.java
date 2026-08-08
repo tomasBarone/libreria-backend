@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-	
+	/*
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Definimos la carpeta física en la raíz del proyecto backend
@@ -19,5 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
       
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations(carpetaUploads);
-    }
+                
+                
+    }   */
 }
