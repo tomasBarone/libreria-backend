@@ -137,7 +137,7 @@ public class LibroController {
 	public ResponseEntity<LibroResponseDTO> updateBook (@PathVariable Long id, @Valid @RequestBody LibroDTO nuevoLibro){
 		
 		
-	
+	    System.out.println(nuevoLibro);
 		LibroResponseDTO libro = libroService.actualizar(id, nuevoLibro);
 		
 		

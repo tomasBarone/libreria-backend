@@ -129,6 +129,13 @@ public class LibroDTO {
 	public void setSinopsis(String sinopsis) {
 		this.sinopsis = sinopsis;
 	}
+
+	@Override
+	public String toString() {
+		return "LibroDTO [titulo=" + titulo + ", autor=" + autor + ", anioPublicacion=" + anioPublicacion
+				+ ", ejemplares=" + ejemplares + ", corrienteId=" + corrienteId + ", subgeneroId=" + subgeneroId
+				+ ", isbn=" + isbn + ", precio=" + precio + ", sinopsis=" + sinopsis + "]";
+	}
 	
 	
 	

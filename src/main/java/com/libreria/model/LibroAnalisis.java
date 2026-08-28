@@ -25,8 +25,9 @@ public class LibroAnalisis {
 	
 	@Column(columnDefinition = "TEXT")
 	private String mapaSensaciones;
-	
+	@Column(columnDefinition = "TEXT")
 	private String sustratoFilosofico;
+	@Column(columnDefinition = "TEXT")
 	private String ejePsicologico;
 	
 	

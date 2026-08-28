@@ -328,38 +328,34 @@ public class LibroService {
 	}
 	
 	
-	public LibroResponseDTO actualizar(Long id, LibroDTO nuevoLibro) {
-		
-		Libro libro = libroRepository.findById(id).orElseThrow(() -> new RuntimeException("no se encontro el libro con id : " +id));
-		
-		//LibroResponseDTO libroResponse = new LibroResponseDTO();
-		
-		
-		
-		/*libro.setTitulo(nuevoLibro.getTitulo());
-		libro.setAutor(nuevoLibro.getAutor());
-		libro.setEjemplares(nuevoLibro.getEjemplares());
-		libro.setAnioPublicacion(nuevoLibro.getAnioPublicacion());  
-		libro.setCategoria(categoria);
-		
-		libroResponse.setTitulo(nuevoLibro.getTitulo());
-		libroResponse.setAutor(nuevoLibro.getAutor());
-		libroResponse.setAnioPublicacion(nuevoLibro.getAnioPublicacion());
-		libroResponse.setCategoriaId(libro.getCategoria().getNombre());*/
-		
-	
-		
-		
-		
-		// NUEVA FORMA
-        libroMapper.updateEntityFromDto(nuevoLibro, libro);
+	@Transactional
+    public LibroResponseDTO actualizar(Long id, LibroDTO nuevoLibro) {
         
-        libroRepository.save(libro);
-		
-		return libroMapper.toResponseDTO(libro); 
-		
-		
-	}
+        Libro libro = libroRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("No se encontró el libro con id : " + id));
+
+        // 1. Mapea los campos simples (primitivos y Strings)
+        libroMapper.updateEntityFromDto(nuevoLibro, libro);
+
+        // 2. Asigna la relación Subgénero
+        if (nuevoLibro.getSubgeneroId() != null) {
+            Subgenero subgenero = subgeneroRepo.findById(nuevoLibro.getSubgeneroId())
+                .orElseThrow(() -> new RuntimeException("No se encontró el subgénero con id: " + nuevoLibro.getSubgeneroId()));
+            libro.setSubgenero(subgenero);
+        }
+
+        // 3. Asigna la relación Corriente Literaria
+        if (nuevoLibro.getCorrienteId() != null) {
+            CorrienteLiteraria corriente = corrienteRepo.findById(nuevoLibro.getCorrienteId())
+                .orElseThrow(() -> new RuntimeException("No se encontró la corriente con id: " + nuevoLibro.getCorrienteId()));
+            libro.setCorriente(corriente);
+        }
+
+        // 4. Persiste los cambios
+        Libro libroGuardado = libroRepository.save(libro);
+        
+        return libroMapper.toResponseDTO(libroGuardado); 
+    }
 	
 	
 	@Transactional
