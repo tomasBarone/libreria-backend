@@ -34,3 +34,11 @@ build/
 
 # Almacenamiento local de imágenes
 uploads/
+
+# Archivos de entorno y variables secretas
+.env
+.env.local
+*.env
+
+# Archivos de configuración con posibles credenciales locales
+application-local.properties
