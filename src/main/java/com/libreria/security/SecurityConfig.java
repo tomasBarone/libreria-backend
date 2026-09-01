@@ -1,6 +1,7 @@
 package com.libreria.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,29 +26,32 @@ public class SecurityConfig {
     
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    // Lee la variable del properties. Si no existe, usa localhost por defecto.
+    @Value("${app.cors.allowed-origins:http://localhost:5173}")
+    private String allowedOrigins;
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                // 1. Vincula el método corsConfigurationSource() definido abajo
                .cors(Customizer.withDefaults()) 
                .csrf(csrf -> csrf.disable()) 
                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
                .authorizeHttpRequests(auth -> auth
-                    // 2. Deja pasar libremente las validaciones de red nativas del navegador
                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                    .requestMatchers("/api/auth/**").permitAll()
                    
-                   // === NUEVA REGLA: Recursos públicos informativos (Menú y Catálogo) ===
+                   // === Health check para orquestadores en la nube (Paso 6 del Checklist) ===
+                   .requestMatchers("/actuator/health").permitAll()
+                   
+                   // === Recursos públicos informativos ===
                    .requestMatchers(HttpMethod.GET, "/api/movimientos/all").permitAll()
-                   .requestMatchers(HttpMethod.GET, "/api/libros/**").permitAll() // Si querés que el catálogo sea visible sin loguearse
-                   .requestMatchers(HttpMethod.GET, "/api/corrientes/**").permitAll() // Si tenés endpoints de corrientes accesibles
+                   .requestMatchers(HttpMethod.GET, "/api/libros/**").permitAll()
+                   .requestMatchers(HttpMethod.GET, "/api/corrientes/**").permitAll()
                    
-                   // === NUEVA REGLA: Permitimos el acceso público a la carpeta externa de imágenes ===
-                   .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
                    
-                   // El resto de los métodos (POST, PUT, DELETE en libros/corrientes o endpoints de administración) requerirán login
+                   
                    .anyRequest().authenticated() 
                )
                .httpBasic(h -> h.disable()) 
@@ -55,12 +59,15 @@ public class SecurityConfig {
                .build();
     }
 
-    // Definimos el origen seguro de datos acá adentro para que la cadena de filtros lo tome al 100%
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173")); 
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        
+        // Soporta múltiples orígenes separados por coma (ej: "https://mi-app.com,https://staging.mi-app.com")
+        List<String> origins = Arrays.asList(allowedOrigins.split(","));
+        config.setAllowedOrigins(origins); 
+        
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
