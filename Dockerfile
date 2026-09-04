@@ -1,15 +1,32 @@
-# Usamos Java 21 como base (la que definimos para el entorno de ejecución)
-FROM eclipse-temurin:21-jdk-alpine
-
-# Directorio de trabajo dentro del contenedor
+# ==========================================
+# ETAPA 1: Compilar la aplicación en Render (Build)
+# ==========================================
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# COPIAMOS el archivo jar que acabamos de generar en tu PC al contenedor
-# Nota: Quitamos el "--from build" porque el archivo está en tu disco, no en otro stage
-COPY target/*.jar app.jar
+# Descargar dependencias
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-# Exponemos el puerto
+# Copiar el código fuente y compilar el archivo .jar
+COPY src ./src
+RUN mvn package -DskipTests
+
+# ==========================================
+# ETAPA 2: Imagen final liviana de ejecución (Runtime)
+# ==========================================
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+
+# Usuario seguro sin privilegios de root
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+
+# Copia el JAR recién generado en la Etapa 1
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
+ENV SPRING_PROFILES_ACTIVE=prod
 
-# Comando para arrancar la API
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Control de memoria RAM para la capa gratuita de Render (512 MB)
+ENTRYPOINT ["java", "-XX:+UseG1GC", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
