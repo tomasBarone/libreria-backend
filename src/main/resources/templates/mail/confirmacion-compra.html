@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 600px; background: #ffffff; padding: 25px; border-radius: 8px; margin: 0 auto; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .item-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .item-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        .cover-img { width: 60px; height: auto; border-radius: 4px; display: block; }
+        .total { text-align: right; font-size: 1.2em; color: #27ae60; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>¡Gracias por tu compra en Librería Shámata!</h2>
+        <p>Hola, tu orden <b>#<span th:text="${orden.id}">123</span></b> fue procesada con éxito.</p>
+
+        <h3>Detalle de la compra:</h3>
+        <table class="item-table">
+            <!-- Iteramos sobre los detalles u ordenItems -->
+            <tr th:each="detalle : ${orden.detalles}">
+                <td style="width: 70px;">
+                    <img th:if="${detalle.libro.imagenUrl != null}" 
+                         th:src="${detalle.libro.imagenUrl}" 
+                         class="cover-img" 
+                         alt="Portada"/>
+                </td>
+                <td>
+                    <strong th:text="${detalle.libro.titulo}">Título del Libro</strong><br/>
+                    <small>Cantidad: <span th:text="${detalle.cantidad}">1</span></small>
+                </td>
+                <td style="text-align: right;">
+                    <b th:text="'$' + ${detalle.precio * detalle.cantidad}">$0</b>
+                </td>
+            </tr>
+        </table>
+
+        <div class="total">
+            <strong>Total Pagado: $<span th:text="${orden.total}">0.00</span></strong>
+        </div>
+
+        <p style="margin-top: 30px; font-size: 0.9em; color: #777;">¡Que disfrutes tu lectura!</p>
+    </div>
+</body>
+</html>

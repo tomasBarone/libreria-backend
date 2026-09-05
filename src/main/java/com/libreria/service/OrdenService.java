@@ -62,7 +62,7 @@ public class OrdenService {
         Orden ordenGuardada = ordenRepository.save(orden);
         
         
-     // 👈 3. ¡AQUÍ ESTABA LO QUE FALTABA! Publicamos el evento de la orden comiteada
+     // Publicamos el evento de la orden comiteada
         eventPublisher.publishEvent(new OrdenCreadaEvent(ordenGuardada, emailCliente));
         
         return ordenGuardada;
