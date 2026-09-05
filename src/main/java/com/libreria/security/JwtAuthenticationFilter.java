@@ -28,6 +28,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, 
                                     HttpServletResponse response, 
                                     FilterChain filterChain) throws ServletException, IOException {
+    	
+    	String requestURI = request.getRequestURI();
+    	if (requestURI.startsWith("/actuator/health")) {
+    	    filterChain.doFilter(request, response);
+    	    return;
+    	}
         
     	System.out.println("====== NUEVA PETICION EN EL FILTRO ======");
         System.out.println("Metodo HTTP: " + request.getMethod());
