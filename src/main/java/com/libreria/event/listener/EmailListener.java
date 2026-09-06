@@ -27,7 +27,7 @@ public class EmailListener {
     public void procesarEnvioEmail(OrdenCreadaEvent event) {
     	System.out.println("👉 1. [EVENTO RECIBIDO] Transacción comiteada. Intentando enviar mail a: " + event.getEmailCliente());
         try {
-            emailService.enviarConfirmacionCompra(event.getEmailCliente(), event.getOrden());
+            emailService.enviarConfirmacionCompra(event.getOrden());
             System.out.println("✅ 2. [MAIL ENVIADO EXITOSAMENTE]");
         } catch (Exception e) {
         	

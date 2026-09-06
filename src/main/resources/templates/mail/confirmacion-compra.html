@@ -22,8 +22,8 @@
             <!-- Iteramos sobre los detalles u ordenItems -->
             <tr th:each="detalle : ${orden.detalles}">
                 <td style="width: 70px;">
-                    <img th:if="${detalle.libro.imagenUrl != null}" 
-                         th:src="${detalle.libro.imagenUrl}" 
+                    <img th:if="${detalle.libro.imagenNombre != null}" 
+                         th:src="${detalle.libro.imagenNombre}" 
                          class="cover-img" 
                          alt="Portada"/>
                 </td>
@@ -32,7 +32,7 @@
                     <small>Cantidad: <span th:text="${detalle.cantidad}">1</span></small>
                 </td>
                 <td style="text-align: right;">
-                    <b th:text="'$' + ${detalle.precio * detalle.cantidad}">$0</b>
+                    <b th:text="'$' + ${detalle.subtotal}">$0</b>
                 </td>
             </tr>
         </table>
