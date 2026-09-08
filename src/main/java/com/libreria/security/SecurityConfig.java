@@ -27,8 +27,7 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // Lee la variable del properties. Si no existe, usa localhost por defecto.
-    @Value("${app.cors.allowed-origins:http://localhost:5173}")
+    @Value("${app.cors.allowed-origins:http://localhost:5173,https://biblioteca-frontend-self.vercel.app}")
     private String allowedOrigins;
     
     @Bean
@@ -66,6 +65,7 @@ public class SecurityConfig {
         // Soporta múltiples orígenes separados por coma (ej: "https://mi-app.com,https://staging.mi-app.com")
         List<String> origins = Arrays.asList(allowedOrigins.split(","));
         config.setAllowedOrigins(origins); 
+        config.addAllowedOriginPattern("https://*.vercel.app"); // Permite cualquier deploy de Vercel
         
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
