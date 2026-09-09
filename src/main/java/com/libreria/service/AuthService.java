@@ -66,14 +66,14 @@ public class AuthService {
     
     public UserResponseDTO registerUser(UserRegistrationDTO registrationDTO) {
         
-        // 1. Validaciones de existencia previa
-        if (userRepository.existsByUsername(registrationDTO.getUsername())) {
-            throw new IllegalArgumentException("El nombre de usuario ya está registrado.");
-        }
-        
-        if (userRepository.existsByEmail(registrationDTO.getEmail())) {
-            throw new IllegalArgumentException("El email ya está asociado a otra cuenta.");
-        }
+    	// Validaciones Case-Insensitive
+    	if (userRepository.existsByUsernameIgnoreCase(registrationDTO.getUsername())) {
+    	    throw new IllegalArgumentException("El nombre de usuario ya está registrado.");
+    	}
+
+    	if (userRepository.existsByEmailIgnoreCase(registrationDTO.getEmail())) {
+    	    throw new IllegalArgumentException("El email ya está asociado a otra cuenta.");
+    	}
 
         // 2. Crear y popular la entidad
         UserEntity entity = new UserEntity();

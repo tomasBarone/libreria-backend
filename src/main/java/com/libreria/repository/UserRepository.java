@@ -10,11 +10,10 @@ import com.libreria.model.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
 	
-	// Este método es clave para Spring Security
-    Optional<UserEntity> findByUsername(String username);
-
-	boolean existsByUsername(String username);
-
-	boolean existsByEmail(String email);
-
+	// Verificaciones Case-Insensitive para el Registro
+    boolean existsByUsernameIgnoreCase(String username);
+    boolean existsByEmailIgnoreCase(String email);
+    
+    // Búsqueda flexible para el Login (acepta username O email sin importar mayúsculas)
+    Optional<UserEntity> findByUsernameIgnoreCaseOrEmailIgnoreCase(String username, String email);
 }
