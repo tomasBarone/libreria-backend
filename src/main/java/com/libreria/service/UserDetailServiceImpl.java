@@ -25,8 +25,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
        
     	// 1. Buscamos el usuario en la DB
-        UserEntity userEntity = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("El usuario " + username + " no existe."));
+    	UserEntity userEntity = userRepository.findByUsernameIgnoreCaseOrEmailIgnoreCase(username, username)
+    	        .orElseThrow(() -> new UsernameNotFoundException("El usuario " + username + " no existe."));
 
         // 2. Convertimos nuestros RoleEntity en GrantedAuthority de Spring
         Collection<? extends GrantedAuthority> authorities = userEntity.getRoles()

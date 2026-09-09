@@ -42,7 +42,7 @@ public class DataInitializer implements CommandLineRunner {
         RoleEntity userRole = roleRepository.findByRoleName(RoleEnum.USER)
                 .orElseGet(() -> roleRepository.save(new RoleEntity(RoleEnum.USER)));
 
-        if (userRepository.findByUsername("admin").isEmpty()) {
+        if (userRepository.findByUsernameIgnoreCaseOrEmailIgnoreCase("admin", "admin@hotmail.com").isEmpty()) {
             UserEntity adminUser = new UserEntity();
             adminUser.setUsername("admin");
             adminUser.setPassword(passwordEncoder.encode("admin123"));
