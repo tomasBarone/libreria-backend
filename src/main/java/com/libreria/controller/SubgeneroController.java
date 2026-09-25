@@ -43,7 +43,7 @@ public class SubgeneroController {
 	}
 	
 	
-	@PatchMapping("/actualizar/{id}")
+	@PutMapping("/actualizar/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<SubgeneroResponseDTO> actualizarRegistro(@PathVariable Long id ,@RequestBody SubgeneroRequestDTO subgenero) {
 		
