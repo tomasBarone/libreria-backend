@@ -73,6 +73,12 @@ public class GeneroLiterario {
 	public void setSubgeneros(List<Subgenero> subgeneros) {
 		this.subgeneros = subgeneros;
 	}
+
+	@Override
+	public String toString() {
+		return "GeneroLiterario [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", subgeneros="
+				+ subgeneros + "]";
+	}
 	
 	
 	

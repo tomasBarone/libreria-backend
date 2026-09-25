@@ -69,7 +69,8 @@ public class Subgenero {
 	public void setGenero(GeneroLiterario genero) {
 		this.genero = genero;
 	}
-	
+
+
 	
 	
 }
