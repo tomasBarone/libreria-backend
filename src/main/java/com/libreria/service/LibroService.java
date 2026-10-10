@@ -395,13 +395,23 @@ public class LibroService {
 
 
 	
-	public Page<LibroResponseDTO> filtrarAvanzado( Integer inicio, Integer fin, Pageable pageable) {
-	    return libroRepository.filtrarLibrosPro( inicio, fin, pageable)  
-	            .map(l -> {
+	public Page<LibroResponseDTO> filtrarAvanzado(String query, Integer inicio, Integer fin, Pageable pageable) {
+	    return libroRepository.filtrarLibrosPro(query, inicio, fin, pageable)  
+	            .map(libro -> {
+	            	
+	            	LibroResponseDTO dto = libroMapper.toResponseDTO(libro);
+	            	
+	            	/*
 	                LibroResponseDTO dto = new LibroResponseDTO();
-	                dto.setTitulo(l.getTitulo());
-	                dto.setAutor(l.getAutor());
-	                dto.setAnioPublicacion(l.getAnioPublicacion());
+	                dto.setId(libro.getId());
+	                dto.setTitulo(libro.getTitulo());
+	                dto.setAutor(libro.getAutor());
+	                dto.setPrecio(libro.getPrecio());
+	                dto.setImagenUrl(libro.getImagenNombre());
+	                dto.setAnioPublicacion(libro.getAnioPublicacion());
+	                if(libro.getCorriente() != null) {
+	                	dto.setCorrienteNombre(libro.getCorriente().getNombre());
+	                }*/
 	                
 	                return dto;
 	            });

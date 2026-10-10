@@ -178,11 +178,12 @@ public class LibroController {
 	//Filtrar busqueda para encontrar libros de una categoria determinada en rango de años
 	@GetMapping("/filtrar-avanzado")
 	public ResponseEntity<Page<LibroResponseDTO>> filtrarLibros(
+			@RequestParam(required = false) String query,
 	        @RequestParam(required = false) Integer anioInicio,
 	        @RequestParam(required = false) Integer anioFin,
 	        Pageable pageable) {
 	    
-	    Page<LibroResponseDTO> libros = libroService.filtrarAvanzado( anioInicio, anioFin, pageable);
+	    Page<LibroResponseDTO> libros = libroService.filtrarAvanzado( query,anioInicio, anioFin, pageable);
 	    return ResponseEntity.ok(libros);
 	}
 	
